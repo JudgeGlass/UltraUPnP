@@ -2,6 +2,7 @@ package net.zicron.ultraupnp;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.concurrent.TimeoutException;
 
 public class FindRouter {
     private final int SSDP_PORT = 1900;
@@ -9,6 +10,8 @@ public class FindRouter {
     private final int SSDP_RESPONSE_DELAY = 2; // Seconds
 
     private final String SSDP_IP = "239.255.255.250";
+
+    private String UPNPUrl = "";
 
     public FindRouter(){
 
@@ -34,13 +37,28 @@ public class FindRouter {
         multicastSocket.disconnect();
         multicastSocket.close();
 
-
         DatagramSocket captureSocket = new DatagramSocket(SSDP_SEARCH_PORT);
-        byte[] routerResponseArray = new byte[1024];
-        DatagramPacket routerResponsePacket = new DatagramPacket(routerResponseArray, routerResponseArray.length);
-        captureSocket.receive(routerResponsePacket);
-        
-        System.out.println("ROUTER RESPONSE");
-        System.out.println(new String(routerResponseArray));
+        captureSocket.setSoTimeout(5000);
+        while(true) {
+            try {
+                byte[] routerResponseArray = new byte[1024];
+                DatagramPacket routerResponsePacket = new DatagramPacket(routerResponseArray, routerResponseArray.length);
+                captureSocket.receive(routerResponsePacket);
+
+                System.out.println("ROUTER RESPONSE");
+                String routerResponseMessage = new String(routerResponsePacket.getData());
+                System.out.println(routerResponseMessage);
+
+                if(routerResponseMessage.contains("LOCATION")){
+                    String url = routerResponseMessage.substring(routerResponseMessage.indexOf("http"),
+                                                                 routerResponseMessage.indexOf("\n",
+                                                                 routerResponseMessage.indexOf("http")));
+                    System.out.println("ROUTER URL: " + url);
+                }
+            }catch (SocketTimeoutException e){
+                System.err.println("TIMED OUT");
+                break;
+            }
+        }
     }
 }
