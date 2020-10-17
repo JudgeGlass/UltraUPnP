@@ -10,8 +10,11 @@ public class Main {
 
     public Main(){
         FindRouter findRouter = new FindRouter();
+        Router router = null;
         try {
-            findRouter.search();
+            if(findRouter.search()){
+                router = new Router(findRouter.getUPNPUrlDescriptor());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

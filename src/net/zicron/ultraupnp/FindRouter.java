@@ -17,7 +17,7 @@ public class FindRouter {
 
     }
 
-    public void search() throws IOException {
+    public boolean search() throws IOException {
         StringBuilder SSDPMessage = new StringBuilder();
         SSDPMessage.append("M-SEARCH * HTTP/1.1\r\n");
         SSDPMessage.append("HOST: " + SSDP_IP + ":" + SSDP_PORT + "\r\n");
@@ -54,11 +54,21 @@ public class FindRouter {
                                                                  routerResponseMessage.indexOf("\n",
                                                                  routerResponseMessage.indexOf("http")));
                     System.out.println("ROUTER URL: " + url);
+                    UPNPUrl = url;
                 }
             }catch (SocketTimeoutException e){
-                System.err.println("TIMED OUT");
+                System.err.println("TIMED OUT. Please wait...");
                 break;
             }
         }
+
+        captureSocket.disconnect();
+        captureSocket.close();
+
+        return !UPNPUrl.isEmpty();
+    }
+
+    public String getUPNPUrlDescriptor(){
+        return UPNPUrl;
     }
 }
