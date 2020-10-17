@@ -1,6 +1,8 @@
 package net.zicron.ultraupnp;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 import java.util.concurrent.TimeoutException;
 
@@ -45,19 +47,19 @@ public class FindRouter {
                 DatagramPacket routerResponsePacket = new DatagramPacket(routerResponseArray, routerResponseArray.length);
                 captureSocket.receive(routerResponsePacket);
 
-                System.out.println("ROUTER RESPONSE");
+                Log.info("ROUTER RESPONSE");
                 String routerResponseMessage = new String(routerResponsePacket.getData());
-                System.out.println(routerResponseMessage);
+                Log.info(routerResponseMessage);
 
                 if(routerResponseMessage.contains("LOCATION")){
                     String url = routerResponseMessage.substring(routerResponseMessage.indexOf("http"),
                                                                  routerResponseMessage.indexOf("\n",
                                                                  routerResponseMessage.indexOf("http")));
-                    System.out.println("ROUTER URL: " + url);
+                    Log.info("ROUTER URL: " + url);
                     UPNPUrl = url;
                 }
             }catch (SocketTimeoutException e){
-                System.err.println("TIMED OUT. Please wait...");
+                Log.warn("TIMED OUT. Please wait...");
                 break;
             }
         }
@@ -66,6 +68,25 @@ public class FindRouter {
         captureSocket.close();
 
         return !UPNPUrl.isEmpty();
+    }
+
+    public static String getPublicIP(){
+        String systemipaddress = "";
+        try
+        {
+            URL url_name = new URL("http://bot.whatismyipaddress.com");
+
+            BufferedReader sc =
+                    new BufferedReader(new InputStreamReader(url_name.openStream()));
+
+            // reads system IPAddress
+            systemipaddress = sc.readLine().trim();
+        }
+        catch (Exception e)
+        {
+            systemipaddress = "Cannot Execute Properly";
+        }
+        return systemipaddress;
     }
 
     public String getUPNPUrlDescriptor(){
