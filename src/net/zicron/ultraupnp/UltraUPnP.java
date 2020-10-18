@@ -30,6 +30,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 public class UltraUPnP {
+    public static final String VERSION = "1.0.0";
+
+
     public static void main(String args[]){
         if(args.length <= 0){
             System.out.println("Usage: UltraUPnP.jar -externalPort <INT> -internalPort <INT> -host <STRING> -proto <String: UDP|TCP>");
