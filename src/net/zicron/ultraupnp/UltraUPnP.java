@@ -1,10 +1,29 @@
 package net.zicron.ultraupnp;
 
-/**
- * UltraUPNP
+/*
+ * Copyright 2020 Hunter Wilcox
+ * Copyright 2020 Zicron-Technologies
+ *
+ * This file is part of UltraUPNP.
+ *
+ * UltraUPNP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * UltraUPNP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with UltraUPNP.  If not, see <http://www.gnu.org/licenses/>.
  *
  *
- * **/
+ *
+ * Ref: http://upnp.org/specs/gw/UPnP-gw-WANIPConnection-v2-Service.pdf
+ *      http://upnp.org/resources/documents/UPnP_UDA_tutorial_July2014.pdf
+ */
 
 
 import java.io.IOException;

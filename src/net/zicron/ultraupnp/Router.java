@@ -1,5 +1,27 @@
 package net.zicron.ultraupnp;
 
+/*
+ * Copyright 2020 Hunter Wilcox
+ * Copyright 2020 Zicron-Technologies
+ *
+ * This file is part of UltraUPNP.
+ *
+ * UltraUPNP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * UltraUPNP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with UltraUPNP.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -47,7 +69,7 @@ public class Router {
             getControlURL();
 
             Log.info("SERVICE TYPE: " + serviceType);
-            Log.info("CONTORL URL: " + controlUrl);
+            Log.info("CONTROL URL: " + controlUrl);
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
@@ -99,8 +121,8 @@ public class Router {
     }
 
     private void sendCommand(String action, List<RouterArgument> routerArguments) throws IOException {
-        String SOAPData = "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\r\n" +
-                "<s:Body>\r\n" +
+        String SOAPData = "<?xml version=\"1.0\"?>\r\n<SOAP-ENV:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\r\n" +
+                "<SOAP-ENV:Body>\r\n" +
                 "<m:" + action + " xmlns:m=\"" + serviceType + "\">\r\n";
 
         for(RouterArgument routerArgument: routerArguments) {
@@ -108,8 +130,8 @@ public class Router {
         }
 
         SOAPData += "</m:" + action + ">\r\n" +
-                "</s:Body>\r\n" +
-                "</s:Envelope>\r\n";
+                "</SOAP-ENV:Body>\r\n" +
+                "</SOAP-ENV:Envelope>\r\n";
 
         Log.info("SOAP DATA: \n" + SOAPData);
 
@@ -119,13 +141,17 @@ public class Router {
         connection.setRequestProperty("Content-Type", "text/xml");
         connection.setRequestProperty("SOAPAction", "\"" + serviceType + "#" + action + "\"");
         connection.setRequestProperty("Connection", "Close");
-        connection.setRequestProperty("Content-Length", "" + routerArguments.size());
+        connection.setRequestProperty("Content-Length", "" + SOAPData.length());
         connection.getOutputStream().write(SOAPData.getBytes());
         //connection.getOutputStream().flush();
 
         int code = connection.getResponseCode();
         String response = connection.getResponseMessage();
         Log.info("Router Response: " + code + " " + response);
+
+        if(code != 200){
+            Log.error("There was an error processing your request!");
+        }
 
         connection.disconnect();
     }
