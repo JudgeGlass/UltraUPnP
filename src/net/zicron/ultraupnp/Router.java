@@ -55,8 +55,8 @@ public class Router {
         }
     }
 
-    public static final boolean UDP = true;
-    public static final boolean TCP = false;
+    public static final String UDP = "UDP";
+    public static final String TCP = "TCP";
     private final String UPNPUrl;
 
     private String controlUrl;
@@ -103,14 +103,15 @@ public class Router {
         }
     }
 
-    public void portForward(int internalPort, int externalPort, String host, boolean isUDP) throws IOException {
+    public void portForward(int internalPort, int externalPort, String host, String isUDP) throws IOException {
         portForward(internalPort, externalPort, host, isUDP, "UltraUPnP");
     }
 
-    public void portForward(int internalPort, int externalPort, String host, boolean isUDP, String description) throws IOException {
+    public void portForward(int internalPort, int externalPort, String host, String isUDP, String description) throws IOException {
+        Log.debug("Port Forwarding...");
         List<RouterArgument> routerArguments = new ArrayList<>();
         routerArguments.add(new RouterArgument("NewRemoteHost", ""));
-        routerArguments.add(new RouterArgument("NewProtocol", isUDP ? "UDP" : "TCP"));
+        routerArguments.add(new RouterArgument("NewProtocol", isUDP));
         routerArguments.add(new RouterArgument("NewInternalClient", host));
         routerArguments.add(new RouterArgument("NewExternalPort", Integer.toString(externalPort)));
         routerArguments.add(new RouterArgument("NewInternalPort", Integer.toString(internalPort)));
@@ -118,6 +119,18 @@ public class Router {
         routerArguments.add(new RouterArgument("NewLeaseDuration", "0"));
 
         sendCommand("AddPortMapping", routerArguments);
+        routerArguments.clear();
+    }
+
+    public void removeMapping(int externalPort, String host, String proto) throws IOException {
+        Log.debug("Removing mapping...");
+        List<RouterArgument> routerArguments = new ArrayList<>();
+        routerArguments.add(new RouterArgument("NewRemoteHost", host));
+        routerArguments.add(new RouterArgument("NewExternalPort", Integer.toString(externalPort)));
+        routerArguments.add(new RouterArgument("NewProtocol", proto));
+
+        sendCommand("DeletePortMapping", routerArguments);
+        routerArguments.clear();
     }
 
     private void sendCommand(String action, List<RouterArgument> routerArguments) throws IOException {
@@ -151,7 +164,11 @@ public class Router {
 
         if(code != 200){
             Log.error("There was an error processing your request!");
+            connection.disconnect();
+            return;
         }
+
+
 
         connection.disconnect();
     }

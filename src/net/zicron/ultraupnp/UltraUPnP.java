@@ -31,7 +31,7 @@ import java.net.InetAddress;
 
 public class UltraUPnP {
     public static final String VERSION = "1.0.0";
-
+    public static final boolean IS_BETA = true;
 
     public static void main(String args[]){
         if(args.length <= 0){
@@ -59,7 +59,7 @@ public class UltraUPnP {
         String host = "";
         int externPort = -1;
         int internPort = -1;
-        boolean udp = false;
+        String udp = "";
 
         int index = 0;
         while(index < args.length){
@@ -92,6 +92,7 @@ public class UltraUPnP {
         }
 
         Log.info("Attempting: " + FindRouter.getPublicIP() + ":" + externPort + " --> " + InetAddress.getLocalHost().toString() + ":" + internPort);
-        router.portForward(internPort, externPort, host, udp);
+        //router.portForward(internPort, externPort, host, udp);
+        router.removeMapping(7979, "192.168.86.54", Router.TCP);
     }
 }

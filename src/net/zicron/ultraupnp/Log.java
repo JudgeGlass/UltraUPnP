@@ -34,4 +34,6 @@ public class Log {
     public static void error(String message){
         System.err.println("[UltraUPNP][ERROR] " + message);
     }
+
+    public static void debug(String message) {if(UltraUPnP.IS_BETA) System.out.println("[DEBUG] " + message);}
 }
