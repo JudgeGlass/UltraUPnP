@@ -43,6 +43,7 @@ public class FindRouter {
     }
 
     public boolean search() throws IOException {
+        Log.info("Searching for routers...");
         StringBuilder SSDPMessage = new StringBuilder();
         SSDPMessage.append("M-SEARCH * HTTP/1.1\r\n");
         SSDPMessage.append("HOST: " + SSDP_IP + ":" + SSDP_PORT + "\r\n");
@@ -70,14 +71,15 @@ public class FindRouter {
                 DatagramPacket routerResponsePacket = new DatagramPacket(routerResponseArray, routerResponseArray.length);
                 captureSocket.receive(routerResponsePacket);
 
-                Log.info("ROUTER RESPONSE");
+                Log.debug("ROUTER RESPONSE");
                 String routerResponseMessage = new String(routerResponsePacket.getData());
-                Log.info(routerResponseMessage);
+                Log.debug(routerResponseMessage);
 
                 if(routerResponseMessage.contains("LOCATION")){
                     String url = routerResponseMessage.substring(routerResponseMessage.indexOf("http"),
                                                                  routerResponseMessage.indexOf("\n",
                                                                  routerResponseMessage.indexOf("http")));
+                    Log.info("Router found!");
                     Log.info("ROUTER URL: " + url);
                     UPNPUrl = url;
                 }
@@ -91,23 +93,6 @@ public class FindRouter {
         captureSocket.close();
 
         return !UPNPUrl.isEmpty();
-    }
-
-    public static String getPublicIP(){
-        String systemipaddress = "";
-        try
-        {
-            URL url_name = new URL("http://bot.whatismyipaddress.com");
-            BufferedReader sc = new BufferedReader(new InputStreamReader(url_name.openStream()));
-
-            // reads system IPAddress
-            systemipaddress = sc.readLine().trim();
-        }
-        catch (Exception e)
-        {
-            systemipaddress = "Cannot Execute Properly";
-        }
-        return systemipaddress;
     }
 
     public String getUPNPUrlDescriptor(){

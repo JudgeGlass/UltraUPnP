@@ -92,7 +92,7 @@ public class UltraUPnP {
             }
         }
 
-        Log.info("Attempting: " + FindRouter.getPublicIP() + ":" + externPort + " --> " + InetAddress.getLocalHost().toString() + ":" + internPort);
+        Log.info("Attempting: " + router.getExternalIPAddress() + ":" + externPort + " --> " + InetAddress.getLocalHost().toString() + ":" + internPort);
         //router.portForward(internPort, externPort, host, udp);
         //router.removeMapping(7979, "192.168.86.54", Router.TCP);
         //System.out.println("External IP: " + router.getExternalIPAddress());
