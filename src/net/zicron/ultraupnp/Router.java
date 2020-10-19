@@ -23,6 +23,7 @@ package net.zicron.ultraupnp;
 
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -37,7 +38,7 @@ import java.util.List;
 
 public class Router {
 
-    private static class RouterArgument{
+    public static class RouterArgument{
         private final String argName;
         private final String argValue;
 
@@ -133,7 +134,40 @@ public class Router {
         routerArguments.clear();
     }
 
-    private void sendCommand(String action, List<RouterArgument> routerArguments) throws IOException {
+    public String getExternalIPAddress() throws IOException {
+        Log.debug("Getting external IP Address");
+        List<RouterArgument> routerArguments = new ArrayList<>();
+        routerArguments.add(new RouterArgument("NewExternalIPAddress", "ExternalIPAddress"));
+
+        List<RouterArgument> response = sendCommand("GetExternalIPAddress", routerArguments);
+        routerArguments.clear();
+
+        String ip = "";
+        for(RouterArgument routerArgument: response){
+            if(routerArgument.getArgName().equals("NewExternalIPAddress")){
+                ip = routerArgument.getArgValue();
+            }
+        }
+
+        if(response.size() == 0){
+            ip = "ERROR";
+        }
+
+        response.clear();
+
+        return ip;
+    }
+
+    public List<RouterArgument> getPortMappings(int index) throws IOException {
+        List<RouterArgument> routerArguments = new ArrayList<>();
+        routerArguments.add(new RouterArgument("NewPortMappingIndex", Integer.toString(index)));
+
+        List<RouterArgument> response = sendCommand("GetGenericPortMappingEntry", routerArguments);
+        routerArguments.clear();
+        return response;
+    }
+
+    private List<RouterArgument> sendCommand(String action, List<RouterArgument> routerArguments) throws IOException {
         String SOAPData = "<?xml version=\"1.0\"?>\r\n<SOAP-ENV:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\r\n" +
                 "<SOAP-ENV:Body>\r\n" +
                 "<m:" + action + " xmlns:m=\"" + serviceType + "\">\r\n";
@@ -146,7 +180,7 @@ public class Router {
                 "</SOAP-ENV:Body>\r\n" +
                 "</SOAP-ENV:Envelope>\r\n";
 
-        Log.info("SOAP DATA: \n" + SOAPData);
+        Log.debug("SOAP DATA: \n" + SOAPData);
 
         HttpURLConnection connection = (HttpURLConnection) new URL(controlUrl).openConnection();
         connection.setRequestMethod("POST");
@@ -165,11 +199,31 @@ public class Router {
         if(code != 200){
             Log.error("There was an error processing your request!");
             connection.disconnect();
-            return;
+            return null;
         }
 
+        List<RouterArgument> routerResponse = new ArrayList<>();
+        try {
+            Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(connection.getInputStream());
+            String tagName = "u:" + action + "Response";
+            NodeList list = d.getElementsByTagName(tagName);
+            Log.debug("LEN: " + list.getLength());
+            for(int i = 0; i < list.getLength(); i++){
+                NodeList l = list.item(i).getChildNodes();
+                for(int j = 0; j < l.getLength(); j++){
+                    Node n = l.item(j);
+                    routerResponse.add(new RouterArgument(n.getNodeName(), n.getTextContent()));
+                }
 
+            }
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
 
         connection.disconnect();
+
+        return routerResponse;
     }
 }

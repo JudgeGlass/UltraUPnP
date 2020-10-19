@@ -28,6 +28,7 @@ package net.zicron.ultraupnp;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.List;
 
 public class UltraUPnP {
     public static final String VERSION = "1.0.0";
@@ -93,6 +94,7 @@ public class UltraUPnP {
 
         Log.info("Attempting: " + FindRouter.getPublicIP() + ":" + externPort + " --> " + InetAddress.getLocalHost().toString() + ":" + internPort);
         //router.portForward(internPort, externPort, host, udp);
-        router.removeMapping(7979, "192.168.86.54", Router.TCP);
+        //router.removeMapping(7979, "192.168.86.54", Router.TCP);
+        //System.out.println("External IP: " + router.getExternalIPAddress());
     }
 }
