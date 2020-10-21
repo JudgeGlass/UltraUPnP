@@ -216,9 +216,7 @@ public class Router {
                 }
 
             }
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
+        } catch (SAXException | ParserConfigurationException e) {
             e.printStackTrace();
         }
 

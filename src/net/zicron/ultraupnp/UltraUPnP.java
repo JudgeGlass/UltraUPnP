@@ -1,6 +1,7 @@
 package net.zicron.ultraupnp;
 
 /*
+***********************************************************************
  * Copyright 2020 Hunter Wilcox
  * Copyright 2020 Zicron-Technologies
  *
@@ -19,7 +20,7 @@ package net.zicron.ultraupnp;
  * You should have received a copy of the GNU General Public License
  * along with UltraUPNP.  If not, see <http://www.gnu.org/licenses/>.
  *
- *
+ *******************************************************************
  *
  * Ref: http://upnp.org/specs/gw/UPnP-gw-WANIPConnection-v2-Service.pdf
  *      http://upnp.org/resources/documents/UPnP_UDA_tutorial_July2014.pdf
@@ -28,7 +29,6 @@ package net.zicron.ultraupnp;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.List;
 
 public class UltraUPnP {
     public static final String VERSION = "1.0.0";
@@ -43,11 +43,11 @@ public class UltraUPnP {
     }
 
     public UltraUPnP(String[] args){
-        FindRouter findRouter = new FindRouter();
-        Router router = null;
+        RouterFinder routerFinder = new RouterFinder();
+        Router router;
         try {
-            if(findRouter.search()){
-                router = new Router(findRouter.getUPNPUrlDescriptor());
+            if(routerFinder.search()){
+                router = new Router(routerFinder.getUPNPUrlDescriptor());
             }else{ return;}
 
             handleCommand(args, router);
@@ -65,6 +65,7 @@ public class UltraUPnP {
         int index = 0;
         while(index < args.length){
             String arg = args[index];
+            Log.info("ARG: " + arg);
             switch (arg){
                 case "-externalPort":
                     externPort = Integer.parseInt(args[index+1]);
@@ -95,6 +96,6 @@ public class UltraUPnP {
         Log.info("Attempting: " + router.getExternalIPAddress() + ":" + externPort + " --> " + InetAddress.getLocalHost().toString() + ":" + internPort);
         //router.portForward(internPort, externPort, host, udp);
         //router.removeMapping(7979, "192.168.86.54", Router.TCP);
-        //System.out.println("External IP: " + router.getExternalIPAddress());
+        System.out.println("External IP: " + router.getExternalIPAddress());
     }
 }
