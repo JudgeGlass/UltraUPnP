@@ -29,26 +29,28 @@ package net.zicron.ultraupnp;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.List;
 
 public class UltraUPnP {
     public static final String VERSION = "1.0.0";
     public static final boolean IS_BETA = true;
 
-    public static void main(String args[]){
+    public static void main(String[] args){
         if(args.length <= 0){
             System.out.println("Usage: UltraUPnP.jar -externalPort <INT> -internalPort <INT> -host <STRING> -proto <String: UDP|TCP>");
             return;
         }
+        Log.info("Starting UltraUPnP v" + VERSION + "...");
         new UltraUPnP(args);
     }
 
     public UltraUPnP(String[] args){
         RouterFinder routerFinder = new RouterFinder();
-        Router router;
+        Router router = null;
         try {
             if(routerFinder.search()){
                 router = new Router(routerFinder.getUPNPUrlDescriptor());
-            }else{ return;}
+            }else{ return; }
 
             handleCommand(args, router);
         } catch (IOException e) {
@@ -56,46 +58,50 @@ public class UltraUPnP {
         }
     }
 
-    private void handleCommand(String[] args, Router router) throws IOException{
-        String host = "";
-        int externPort = -1;
-        int internPort = -1;
-        String udp = "";
+    public void addPortMapping(String args[], Router router) throws IOException{
+        CommandParser.currentParser.add(args);
+        Log.info("Attempting: " + router.getExternalIPAddress() + ":" + CommandParser.currentParser.externalPort + " --> " + InetAddress.getLocalHost().toString() + ":" + CommandParser.currentParser.internalPort);
+        int internalPort = CommandParser.currentParser.internalPort;
+        int externalPort = CommandParser.currentParser.externalPort;
+        String host = CommandParser.currentParser.host;
+        String proto = CommandParser.currentParser.protocol;
+        router.portForward(internalPort, externalPort, host, proto);
+    }
 
-        int index = 0;
-        while(index < args.length){
-            String arg = args[index];
-            Log.info("ARG: " + arg);
-            switch (arg){
-                case "-externalPort":
-                    externPort = Integer.parseInt(args[index+1]);
-                    index += 2;
-                    break;
-                case "-internalPort":
-                    internPort = Integer.parseInt(args[index+1]);
-                    index += 2;
-                    break;
-                case "-host":
-                    host = args[index+1];
-                    index+=2;
-                    break;
-                case "-proto":
-                    if(args[index+1].equalsIgnoreCase("udp")){
-                        udp = Router.UDP;
-                    }else{
-                        udp = Router.TCP;
-                    }
-                    index += 2;
-                    break;
-                default:
-                    Log.error("Unknown Argument: " + arg);
-                    return;
-            }
+    public void removePortMapping(String args[], Router router) throws IOException{
+        CommandParser.currentParser.remove(args);
+        router.removeMapping(CommandParser.currentParser.externalPort, CommandParser.currentParser.host, CommandParser.currentParser.protocol);
+    }
+
+    public String getExternalIPAddress(Router router) throws IOException{
+        return router.getExternalIPAddress();
+    }
+
+
+    private void handleCommand(String[] args, Router router) throws IOException{
+        switch (args[0]){
+            case "-add":
+                addPortMapping(args, router);
+                break;
+            case "-remove":
+                removePortMapping(args, router);
+                break;
+            case "-externalAddress":
+                Log.info("External IP: " + getExternalIPAddress(router));
+                break;
+            default:
+                Log.error("Unknown Argument: " + args[0]);
+                return;
+
         }
 
-        Log.info("Attempting: " + router.getExternalIPAddress() + ":" + externPort + " --> " + InetAddress.getLocalHost().toString() + ":" + internPort);
-        //router.portForward(internPort, externPort, host, udp);
+
+        //router.portForward(internPort, externPort, host, proto);
         //router.removeMapping(7979, "192.168.86.54", Router.TCP);
-        System.out.println("External IP: " + router.getExternalIPAddress());
+
+        List<Router.RouterArgument> routerArgumentList = router.getPortMappings(1);
+        for(Router.RouterArgument ra: routerArgumentList){
+            Log.info("RESPONSE: <" + ra.getArgName() + ">" + ra.getArgValue() + "</" + ra.getArgName() + ">");
+        }
     }
 }
