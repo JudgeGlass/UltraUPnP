@@ -32,7 +32,7 @@ import java.net.InetAddress;
 import java.util.List;
 
 public class UltraUPnP {
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.1.0";
     public static final boolean IS_BETA = true;
 
     public static void main(String[] args){
@@ -58,7 +58,7 @@ public class UltraUPnP {
         }
     }
 
-    public void addPortMapping(String args[], Router router) throws IOException{
+    public void addPortMapping(String[] args, Router router) throws IOException{
         CommandParser.currentParser.add(args);
         Log.info("Attempting: " + router.getExternalIPAddress() + ":" + CommandParser.currentParser.externalPort + " --> " + InetAddress.getLocalHost().toString() + ":" + CommandParser.currentParser.internalPort);
         int internalPort = CommandParser.currentParser.internalPort;
@@ -68,7 +68,7 @@ public class UltraUPnP {
         router.portForward(internalPort, externalPort, host, proto);
     }
 
-    public void removePortMapping(String args[], Router router) throws IOException{
+    public void removePortMapping(String[] args, Router router) throws IOException{
         CommandParser.currentParser.remove(args);
         router.removeMapping(CommandParser.currentParser.externalPort, CommandParser.currentParser.host, CommandParser.currentParser.protocol);
     }

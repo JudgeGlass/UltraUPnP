@@ -9,7 +9,7 @@ public class CommandParser {
     public int externalPort;
     public String protocol;
 
-    public void add(String args[]){
+    public void add(String[] args){
         for(int i = 1; i < args.length; i+=2){
             String value = args[i + 1];
             switch (args[i]){
@@ -31,7 +31,7 @@ public class CommandParser {
         }
     }
 
-    public void remove(String args[]){
+    public void remove(String[] args){
         for(int i = 1; i < args.length; i+=2){
             String value = args[i + 1];
             switch (args[i]){

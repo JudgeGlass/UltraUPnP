@@ -14,8 +14,10 @@ java -jar UltraUPnP1.0.0.jar -externalPort <INT> -internalPort <INT> -host <STRI
 ```
 
 # Issues
-This program may not work on some routers. I have only tested them on two different routers. If you have a solution to your router
+- This program may not work on some routers. I have only tested them on two different routers. If you have a solution to your router
 feel free to contribute it.
+
+- I cannot get it to find router on Ubuntu / Debian. Always Times out.
 
 # Resources Used
 http://upnp.org/specs/gw/UPnP-gw-WANIPConnection-v2-Service.pdf

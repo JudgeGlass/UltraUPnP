@@ -21,13 +21,8 @@ package net.zicron.ultraupnp;
  */
 
 
-
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.*;
-import java.util.concurrent.TimeoutException;
 
 public class RouterFinder {
     private final int SSDP_PORT = 1900;

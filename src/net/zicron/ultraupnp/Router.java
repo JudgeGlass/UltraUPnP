@@ -103,15 +103,15 @@ public class Router {
         }
     }
 
-    public void portForward(int internalPort, int externalPort, String host, String isUDP) throws IOException {
-        portForward(internalPort, externalPort, host, isUDP, "UltraUPnP");
+    public void portForward(int internalPort, int externalPort, String host, String proto) throws IOException {
+        portForward(internalPort, externalPort, host, proto, "UltraUPnP");
     }
 
-    public void portForward(int internalPort, int externalPort, String host, String isUDP, String description) throws IOException {
+    public void portForward(int internalPort, int externalPort, String host, String proto, String description) throws IOException {
         Log.debug("Port Forwarding...");
         List<RouterArgument> routerArguments = new ArrayList<>();
         routerArguments.add(new RouterArgument("NewRemoteHost", ""));
-        routerArguments.add(new RouterArgument("NewProtocol", isUDP));
+        routerArguments.add(new RouterArgument("NewProtocol", proto));
         routerArguments.add(new RouterArgument("NewInternalClient", host));
         routerArguments.add(new RouterArgument("NewExternalPort", Integer.toString(externalPort)));
         routerArguments.add(new RouterArgument("NewInternalPort", Integer.toString(internalPort)));
@@ -140,6 +140,11 @@ public class Router {
 
         List<RouterArgument> response = sendCommand("GetExternalIPAddress", routerArguments);
         routerArguments.clear();
+
+        if(response == null){
+            return "ROUTER RESPONDS: NULL";
+        }
+
 
         String ip = "";
         for(RouterArgument routerArgument: response){
@@ -196,7 +201,7 @@ public class Router {
         Log.info("Router Response: " + code + " " + response);
 
         if(code != 200){
-            Log.error("There was an error processing your request!");
+            Log.error("There was an error processing your request! Router response: " + code);
             connection.disconnect();
             return null;
         }
