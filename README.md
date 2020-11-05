@@ -10,7 +10,7 @@ UltraUPnP is a standalone jar / library that can be used to forward ports on a r
 # Usage
 You must have Java 8+
 ```bash
-java -jar UltraUPnP1.0.0.jar -externalPort <INT> -internalPort <INT> -host <STRING> -proto <String: UDP|TCP>
+java -jar UltraUPnP1.0.0.jar -add -externalPort <INT> -internalPort <INT> -host <STRING> -proto <String: UDP|TCP>
 ```
 
 # Issues
