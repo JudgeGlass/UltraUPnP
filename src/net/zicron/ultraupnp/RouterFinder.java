@@ -23,11 +23,12 @@ package net.zicron.ultraupnp;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Enumeration;
 
 public class RouterFinder {
     private final int SSDP_PORT = 1900;
     private final int SSDP_SEARCH_PORT = 1901;
-    private final int SSDP_RESPONSE_DELAY = 2; // Seconds
+    private final int SSDP_RESPONSE_DELAY = 4; // Seconds
 
     private final String SSDP_IP = "239.255.255.250";
 
@@ -38,6 +39,7 @@ public class RouterFinder {
     }
 
     public boolean search() throws IOException {
+        Log.debug("Java Version: " + System.getProperty("java.version"));
         Log.info("Searching for routers...");
         StringBuilder SSDPMessage = new StringBuilder();
         SSDPMessage.append("M-SEARCH * HTTP/1.1\r\n");
@@ -51,15 +53,26 @@ public class RouterFinder {
         DatagramPacket messagePacket = new DatagramPacket(messageArray, messageArray.length, messageSocketAddress);
 
 
-        InetSocketAddress hostSocketAddress = new InetSocketAddress(InetAddress.getLocalHost(), SSDP_SEARCH_PORT);
+        String localIP = InetAddress.getLocalHost().toString();
+        if(System.getProperty("os.name").contains("Linux")){
+            try(final DatagramSocket socket = new DatagramSocket()){
+                socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+                localIP = socket.getLocalAddress().getHostAddress();
+            }
+        }
+
+
+        Log.debug("Local Address: " + localIP);
+        InetSocketAddress hostSocketAddress = new InetSocketAddress(localIP, SSDP_SEARCH_PORT);
         MulticastSocket multicastSocket = new MulticastSocket(hostSocketAddress);
-        multicastSocket.setTimeToLive(4);
+        multicastSocket.setTimeToLive(8);
         multicastSocket.send(messagePacket);
+        //Log.debug("MULTICAST SUPPORT: " +multicastSocket.getNetworkInterface().supportsMulticast());
         multicastSocket.disconnect();
         multicastSocket.close();
 
         DatagramSocket captureSocket = new DatagramSocket(SSDP_SEARCH_PORT);
-        captureSocket.setSoTimeout(5000);
+        captureSocket.setSoTimeout(10000);
         while(true) {
             try {
                 byte[] routerResponseArray = new byte[1024];
