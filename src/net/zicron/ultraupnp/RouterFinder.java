@@ -57,7 +57,7 @@ public class RouterFinder {
         Log.info("Finding network interfaces...");
         String localIP = InetAddress.getLocalHost().toString();
         Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
-        for (NetworkInterface netint : Collections.list(nets)) {
+        for (NetworkInterface netint : Collections.list(nets)) { // For Windows, finds the loopback interface.
             InetAddress loopBack = getLoopbackAddress(netint);
             if(loopBack != null){
                 localIP = loopBack.getHostAddress();
@@ -66,8 +66,7 @@ public class RouterFinder {
 
         Log.debug("Local address: " + localIP);
 
-
-        if(System.getProperty("os.name").contains("Linux")){
+        if(System.getProperty("os.name").contains("Linux")){ // Can't find loopback interface on some distros; have to use Google.
             Log.debug("System detected as Linux");
             try(final DatagramSocket socket = new DatagramSocket()){
                 socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
@@ -81,7 +80,6 @@ public class RouterFinder {
         MulticastSocket multicastSocket = new MulticastSocket(hostSocketAddress);
         multicastSocket.setTimeToLive(8);
         multicastSocket.send(messagePacket);
-        //Log.debug("MULTICAST SUPPORT: " +multicastSocket.getNetworkInterface().supportsMulticast());
         multicastSocket.disconnect();
         multicastSocket.close();
 
@@ -117,7 +115,7 @@ public class RouterFinder {
         return !UPNPUrl.isEmpty();
     }
 
-    public InetAddress getLoopbackAddress(NetworkInterface netint) throws SocketException {
+    public InetAddress getLoopbackAddress(NetworkInterface netint) {
         Log.debug("Display name: " + netint.getDisplayName());
         Log.debug("Name: " + netint.getName());
         Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
