@@ -23,6 +23,7 @@ package net.zicron.ultraupnp;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Collections;
 import java.util.Enumeration;
 
 public class RouterFinder {
@@ -53,8 +54,21 @@ public class RouterFinder {
         DatagramPacket messagePacket = new DatagramPacket(messageArray, messageArray.length, messageSocketAddress);
 
 
+        Log.info("Finding network interfaces...");
         String localIP = InetAddress.getLocalHost().toString();
+        Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+        for (NetworkInterface netint : Collections.list(nets)) {
+            InetAddress loopBack = getLoopbackAddress(netint);
+            if(loopBack != null){
+                localIP = loopBack.getHostAddress();
+            }
+        }
+
+        Log.debug("Local address: " + localIP);
+
+
         if(System.getProperty("os.name").contains("Linux")){
+            Log.debug("System detected as Linux");
             try(final DatagramSocket socket = new DatagramSocket()){
                 socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
                 localIP = socket.getLocalAddress().getHostAddress();
@@ -101,6 +115,20 @@ public class RouterFinder {
         captureSocket.close();
 
         return !UPNPUrl.isEmpty();
+    }
+
+    public InetAddress getLoopbackAddress(NetworkInterface netint) throws SocketException {
+        Log.debug("Display name: " + netint.getDisplayName());
+        Log.debug("Name: " + netint.getName());
+        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
+        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+            Log.debug("InetAddress: " + inetAddress);
+            if(inetAddress.isLoopbackAddress()){
+                return inetAddress;
+            }
+        }
+
+        return null;
     }
 
     public String getUPNPUrlDescriptor(){
