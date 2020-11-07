@@ -59,36 +59,82 @@ public class UltraUPnP {
         }
     }
 
-    public void addPortMapping(String[] args, Router router) throws IOException{
-        CommandParser.currentParser.add(args);
-        Log.info("Attempting: " + router.getExternalIPAddress() + ":" + CommandParser.currentParser.externalPort + " --> " + InetAddress.getLocalHost().toString() + ":" + CommandParser.currentParser.internalPort);
-        int internalPort = CommandParser.currentParser.internalPort;
-        int externalPort = CommandParser.currentParser.externalPort;
-        String host = CommandParser.currentParser.host;
-        String proto = CommandParser.currentParser.protocol;
-        router.portForward(internalPort, externalPort, host, proto);
+    public void addPortMapping(String[] args, Router router, CommandParser currentParser) throws IOException{
+        currentParser.add(args);
+        Log.info("Attempting: " + router.getExternalIPAddress() + ":" + currentParser.externalPort + " --> " + InetAddress.getLocalHost().toString() + ":" + currentParser.internalPort);
+        int internalPort = currentParser.internalPort;
+        int externalPort = currentParser.externalPort;
+        String host = currentParser.host;
+        String proto = currentParser.protocol;
+        String description = currentParser.description;
+        router.portForward(internalPort, externalPort, host, proto, description);
     }
 
-    public void removePortMapping(String[] args, Router router) throws IOException{
-        CommandParser.currentParser.remove(args);
-        router.removeMapping(CommandParser.currentParser.externalPort, CommandParser.currentParser.host, CommandParser.currentParser.protocol);
+    public void removePortMapping(String[] args, Router router, CommandParser currentParser) throws IOException{
+        currentParser.remove(args);
+        router.removeMapping(currentParser.externalPort, currentParser.host, currentParser.protocol);
     }
 
     public String getExternalIPAddress(Router router) throws IOException{
         return router.getExternalIPAddress();
     }
 
+    public void listMappings(Router router) throws IOException {
+        List<Router.RouterArgument> routerArgumentList = router.getPortMappings();
+        System.out.println("\tInternal Port\tExternal Port\tHost\t\tProtocol\tDescription");
+
+        String host = "";
+        String proto = "";
+        String externalPort = "";
+        String internalPort = "";
+        String description = "";
+
+        for(Router.RouterArgument ra: routerArgumentList){
+            //Log.info("RESPONSE: <" + ra.getArgName() + ">" + ra.getArgValue() + "</" + ra.getArgName() + ">");
+
+            switch (ra.getArgName()){
+                case "NewInternalClient":
+                    host = ra.getArgValue();
+                    break;
+                case "NewProtocol":
+                    proto = ra.getArgValue();
+                    break;
+                case "NewInternalPort":
+                    internalPort = ra.getArgValue();
+                    break;
+                case "NewExternalPort":
+                    externalPort = ra.getArgValue();
+                    break;
+                case "NewPortMappingDescription":
+                    description = ra.getArgValue();
+                    break;
+            }
+
+            if(!proto.isEmpty() && !host.isEmpty() && !externalPort.isEmpty() && !internalPort.isEmpty() && !proto.isEmpty()) {
+                System.out.println(String.format("Mapping: %s\t\t%s\t\t%s\t%s\t\t%s", internalPort, externalPort, host, proto, description));
+                host = "";
+                proto = "";
+                externalPort = "";
+                internalPort = "";
+                description = "";
+            }
+        }
+    }
+
 
     private void handleCommand(String[] args, Router router) throws IOException{
         switch (args[0]){
             case "-add":
-                addPortMapping(args, router);
+                addPortMapping(args, router, CommandParser.currentParser);
                 break;
             case "-remove":
-                removePortMapping(args, router);
+                removePortMapping(args, router, CommandParser.currentParser);
                 break;
             case "-externalAddress":
                 Log.info("External IP: " + getExternalIPAddress(router));
+                break;
+            case "-list":
+                listMappings(router);
                 break;
             default:
                 Log.error("Unknown Argument: " + args[0]);
@@ -100,9 +146,6 @@ public class UltraUPnP {
         //router.portForward(internPort, externPort, host, proto);
         //router.removeMapping(7979, "192.168.86.54", Router.TCP);
 
-        List<Router.RouterArgument> routerArgumentList = router.getPortMappings(1);
-        for(Router.RouterArgument ra: routerArgumentList){
-            Log.info("RESPONSE: <" + ra.getArgName() + ">" + ra.getArgValue() + "</" + ra.getArgName() + ">");
-        }
+
     }
 }

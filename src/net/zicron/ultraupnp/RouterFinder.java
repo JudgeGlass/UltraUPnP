@@ -60,6 +60,7 @@ public class RouterFinder {
         for (NetworkInterface netint : Collections.list(nets)) { // For Windows, finds the loopback interface.
             InetAddress loopBack = getLoopbackAddress(netint);
             if(loopBack != null){
+                Log.info("Loopback address found at " + loopBack.getHostAddress() + " on interface \"" + netint.getName() + "\"");
                 localIP = loopBack.getHostAddress();
             }
         }
@@ -71,11 +72,11 @@ public class RouterFinder {
             try(final DatagramSocket socket = new DatagramSocket()){
                 socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
                 localIP = socket.getLocalAddress().getHostAddress();
+                Log.info("Loopback address changed to: " + localIP);
             }
         }
 
 
-        Log.debug("Local Address: " + localIP);
         InetSocketAddress hostSocketAddress = new InetSocketAddress(localIP, SSDP_SEARCH_PORT);
         MulticastSocket multicastSocket = new MulticastSocket(hostSocketAddress);
         multicastSocket.setTimeToLive(8);

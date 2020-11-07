@@ -33,13 +33,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Router {
 
     public static class RouterArgument{
         private final String argName;
-        private final String argValue;
+        private String argValue;
 
         public RouterArgument(final String argName, final String argValue){
             this.argName = argName;
@@ -162,13 +163,23 @@ public class Router {
         return ip;
     }
 
-    public List<RouterArgument> getPortMappings(int index) throws IOException {
+    public List<RouterArgument> getPortMappings() throws IOException {
         List<RouterArgument> routerArguments = new ArrayList<>();
-        routerArguments.add(new RouterArgument("NewPortMappingIndex", Integer.toString(index)));
+        routerArguments.add(new RouterArgument("NewPortMappingIndex", Integer.toString(0)));
 
-        List<RouterArgument> response = sendCommand("GetGenericPortMappingEntry", routerArguments);
+        List<RouterArgument> response;
+        List<RouterArgument> mappings = new ArrayList<>();
+        int counter = 0;
+
+        // Kind of a bad way of doing it, but it works?
+        while((response = sendCommand("GetGenericPortMappingEntry", routerArguments)) != null){
+            routerArguments.get(0).argValue = Integer.toString(counter);
+            mappings.addAll(response);
+            counter++;
+        }
+
         routerArguments.clear();
-        return response;
+        return mappings;
     }
 
     private List<RouterArgument> sendCommand(String action, List<RouterArgument> routerArguments) throws IOException {

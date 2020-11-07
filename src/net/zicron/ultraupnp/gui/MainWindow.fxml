@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="742.0" prefWidth="1074.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.zicron.ultraupnp.gui.MainWindow">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Quit" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+      <BorderPane prefHeight="717.0" prefWidth="1074.0">
+         <center>
+            <TextArea prefHeight="406.0" prefWidth="1074.0" text="UltraUPNP" BorderPane.alignment="CENTER" />
+         </center>
+         <bottom>
+            <ButtonBar prefHeight="40.0" prefWidth="1074.0" BorderPane.alignment="CENTER">
+              <buttons>
+                  <Button fx:id="btnRemovePort" disable="true" mnemonicParsing="false" text="Remove Port" />
+                  <Button fx:id="btnAddPort" disable="true" mnemonicParsing="false" text="Add Port" />
+                <Button fx:id="btnConnect" mnemonicParsing="false" text="Connect" />
+              </buttons>
+            </ButtonBar>
+         </bottom>
+         <top>
+            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn fx:id="tcHost" prefWidth="390.0" text="Host" />
+                <TableColumn fx:id="tcInternal" prefWidth="90.0" text="Internal Port" />
+                  <TableColumn fx:id="tcExternal" prefWidth="108.0" text="External Port" />
+                  <TableColumn fx:id="tcProtocol" prefWidth="97.0" text="Protocol" />
+                  <TableColumn fx:id="tcDescription" prefWidth="386.0" text="Description" />
+              </columns>
+            </TableView>
+         </top>
+      </BorderPane>
+  </children>
+</VBox>

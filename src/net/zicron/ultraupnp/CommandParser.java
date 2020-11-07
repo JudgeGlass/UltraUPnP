@@ -8,6 +8,7 @@ public class CommandParser {
     public int internalPort;
     public int externalPort;
     public String protocol;
+    public String description;
 
     public void add(String[] args){
         for(int i = 1; i < args.length; i+=2){
@@ -24,6 +25,9 @@ public class CommandParser {
                     break;
                 case "-proto":
                     protocol = value.toUpperCase();
+                    break;
+                case "-desc":
+                    description = value;
                     break;
                 default:
                     Log.error("[PARSER] Unknown Argument: " + args[i]);
