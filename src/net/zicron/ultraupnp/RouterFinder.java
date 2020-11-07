@@ -29,7 +29,7 @@ import java.util.Enumeration;
 public class RouterFinder {
     private final int SSDP_PORT = 1900;
     private final int SSDP_SEARCH_PORT = 1901;
-    private final int SSDP_RESPONSE_DELAY = 4; // Seconds
+    private final int SSDP_RESPONSE_DELAY = 2; // Seconds
 
     private final String SSDP_IP = "239.255.255.250";
 
@@ -45,9 +45,11 @@ public class RouterFinder {
         StringBuilder SSDPMessage = new StringBuilder();
         SSDPMessage.append("M-SEARCH * HTTP/1.1\r\n");
         SSDPMessage.append("HOST: " + SSDP_IP + ":" + SSDP_PORT + "\r\n");
+        SSDPMessage.append("ST: urn:schemas-upnp-org:device:InternetGatewayDevice:1\r\n");
         SSDPMessage.append("MAN: \"ssdp:discover\"\r\n");
         SSDPMessage.append("MX: " + SSDP_RESPONSE_DELAY + "\r\n");
-        SSDPMessage.append("ST: urn:schemas-upnp-org:device:InternetGatewayDevice:1\r\n");
+        SSDPMessage.append("\n");
+
 
         byte[] messageArray = SSDPMessage.toString().getBytes();
         InetSocketAddress messageSocketAddress = new InetSocketAddress(InetAddress.getByName(SSDP_IP), SSDP_PORT);
@@ -117,11 +119,11 @@ public class RouterFinder {
     }
 
     public InetAddress getLoopbackAddress(NetworkInterface netint) {
-        Log.debug("Display name: " + netint.getDisplayName());
-        Log.debug("Name: " + netint.getName());
+        //Log.debug("Display name: " + netint.getDisplayName());
+        //Log.debug("Name: " + netint.getName());
         Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
         for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-            Log.debug("InetAddress: " + inetAddress);
+            //Log.debug("InetAddress: " + inetAddress);
             if(inetAddress.isLoopbackAddress()){
                 return inetAddress;
             }

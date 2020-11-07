@@ -22,6 +22,9 @@ package net.zicron.ultraupnp;
  */
 
 
+import javafx.application.Platform;
+import net.zicron.ultraupnp.gui.MainWindow;
+
 public class Log {
     public static void info(String message){
         System.out.println("[UltraUPNP][INFO] " + message);
@@ -35,5 +38,7 @@ public class Log {
         System.err.println("[UltraUPNP][ERROR] " + message);
     }
 
-    public static void debug(String message) {if(UltraUPnP.IS_BETA) System.out.println("[DEBUG] " + message);}
+    public static void debug(String message) {
+        if(UltraUPnP.IS_BETA) System.out.println("[DEBUG] " + message);
+    }
 }

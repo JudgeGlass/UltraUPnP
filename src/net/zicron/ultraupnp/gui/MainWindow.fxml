@@ -22,19 +22,19 @@
     </MenuBar>
       <BorderPane prefHeight="717.0" prefWidth="1074.0">
          <center>
-            <TextArea prefHeight="406.0" prefWidth="1074.0" text="UltraUPNP" BorderPane.alignment="CENTER" />
+            <TextArea fx:id="txtLog" prefHeight="406.0" prefWidth="1074.0" text="UltraUPNP" BorderPane.alignment="CENTER" />
          </center>
          <bottom>
             <ButtonBar prefHeight="40.0" prefWidth="1074.0" BorderPane.alignment="CENTER">
               <buttons>
                   <Button fx:id="btnRemovePort" disable="true" mnemonicParsing="false" text="Remove Port" />
                   <Button fx:id="btnAddPort" disable="true" mnemonicParsing="false" text="Add Port" />
-                <Button fx:id="btnConnect" mnemonicParsing="false" text="Connect" />
+                <Button fx:id="btnConnect" mnemonicParsing="false" text="Connect" onAction="#connect" />
               </buttons>
             </ButtonBar>
          </bottom>
          <top>
-            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
                 <TableColumn fx:id="tcHost" prefWidth="390.0" text="Host" />
                 <TableColumn fx:id="tcInternal" prefWidth="90.0" text="Internal Port" />
