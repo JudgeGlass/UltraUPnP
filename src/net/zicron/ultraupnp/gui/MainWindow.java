@@ -103,7 +103,10 @@ public class MainWindow extends Application{
 
     @FXML
     private void add() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("AddMappingWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AddMappingWindow.fxml"));
+        loader.setController(new AddPortMapping(tableView));
+        Parent root = loader.load();
+
         Stage stage = new Stage();
         stage.setTitle("UltraUPnP GUI - v" + UltraUPnP.VERSION + " - Add Port Mapping");
         stage.setScene(new Scene(root, 600, 320));

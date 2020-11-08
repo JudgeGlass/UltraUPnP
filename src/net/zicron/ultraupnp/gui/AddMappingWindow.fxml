@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="323.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.zicron.ultraupnp.gui.AddPortMapping">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="323.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="Previous Saves" />
       <ListView fx:id="saveList" layoutX="14.0" layoutY="31.0" prefHeight="200.0" prefWidth="578.0" />
@@ -20,7 +20,7 @@
       <TextField fx:id="txtInternalPort" layoutX="192.0" layoutY="248.0" prefHeight="25.0" prefWidth="78.0" />
       <TextField fx:id="txtExternalPort" layoutX="301.0" layoutY="248.0" prefHeight="25.0" prefWidth="78.0" />
       <TextField fx:id="txtDescription" layoutX="413.0" layoutY="248.0" prefHeight="25.0" prefWidth="177.0" />
-      <Button fx:id="btnAdd" layoutX="497.0" layoutY="284.0" mnemonicParsing="false" text="Add Mapping" />
+      <Button fx:id="btnAdd" layoutX="497.0" layoutY="284.0" mnemonicParsing="false" text="Add Mapping" onAction="#add"/>
       <CheckBox fx:id="chkTCP" layoutX="413.0" layoutY="288.0" mnemonicParsing="false" selected="true" text="TCP" />
       <CheckBox fx:id="chkUDP" layoutX="357.0" layoutY="288.0" mnemonicParsing="false" text="UDP" />
       <Label layoutX="292.0" layoutY="288.0" text="Protocol:" />
