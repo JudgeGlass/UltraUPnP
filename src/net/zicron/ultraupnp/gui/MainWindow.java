@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import net.zicron.ultraupnp.Log;
 import net.zicron.ultraupnp.Router;
 import net.zicron.ultraupnp.RouterFinder;
 import net.zicron.ultraupnp.UltraUPnP;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class MainWindow extends Application{
 
-    public static boolean isGUIRunning = false;
+    public boolean isGUIRunning = false;
     public static MainWindow currentMainWindow;
 
     public Stage primaryStage;
@@ -49,6 +50,7 @@ public class MainWindow extends Application{
     @FXML
     private void initialize(){
         MainWindow.currentMainWindow = this;
+        MainWindow.currentMainWindow.isGUIRunning = true;
         tcHost.setCellValueFactory(new PropertyValueFactory<>("hostname"));
         tcInternal.setCellValueFactory(new PropertyValueFactory<>("internalPort"));
         tcExternal.setCellValueFactory(new PropertyValueFactory<>("externalPort"));
@@ -64,12 +66,49 @@ public class MainWindow extends Application{
             try {
                 if(routerFinder.search()){
                     router = new Router(routerFinder.getUPNPUrlDescriptor());
+                    Platform.runLater(() -> {
+                        btnAddPort.setDisable(false);
+                        btnRemovePort.setDisable(false);
+                        btnConnect.setDisable(true);
+                    });
                     listPortMappings();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    @FXML
+    private void remove(){
+        PortMapping selectedPortMapping = tableView.getSelectionModel().getSelectedItem();
+        btnAddPort.setDisable(true);
+        btnRemovePort.setDisable(true);
+        Log.debug("PORT HOST: " + selectedPortMapping.getHostname());
+
+        new Thread(() -> {
+            try {
+                router.removeMapping(Integer.parseInt(selectedPortMapping.getExternalPort()), selectedPortMapping.getHostname(), selectedPortMapping.getProtocol());
+                Platform.runLater(() -> {
+                    btnAddPort.setDisable(false);
+                    btnRemovePort.setDisable(false);
+                    tableView.getItems().remove(selectedPortMapping);
+                });
+                //listPortMappings();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    @FXML
+    private void add() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("AddMappingWindow.fxml"));
+        Stage stage = new Stage();
+        stage.setTitle("UltraUPnP GUI - v" + UltraUPnP.VERSION + " - Add Port Mapping");
+        stage.setScene(new Scene(root, 600, 320));
+        stage.setResizable(false);
+        stage.show();
     }
 
     private void listPortMappings(){
@@ -130,13 +169,12 @@ public class MainWindow extends Application{
         this.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         primaryStage.setTitle("UltraUPnP GUI - v" + UltraUPnP.VERSION);
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setScene(new Scene(root, 1000, 700));
         primaryStage.setResizable(false);
         primaryStage.show();
     }
 
     public static void main(String[] args){
-        isGUIRunning = true;
         launch(args);
     }
 }
