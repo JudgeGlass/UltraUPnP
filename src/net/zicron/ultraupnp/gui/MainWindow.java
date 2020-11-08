@@ -1,5 +1,32 @@
 package net.zicron.ultraupnp.gui;
 
+/*
+ ***********************************************************************
+ * Copyright 2020 Hunter Wilcox
+ * Copyright 2020 Zicron-Technologies
+ *
+ * This file is part of UltraUPNP.
+ *
+ * UltraUPNP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * UltraUPNP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with UltraUPNP.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *******************************************************************
+ *
+ * Ref: http://upnp.org/specs/gw/UPnP-gw-WANIPConnection-v2-Service.pdf
+ *      http://upnp.org/resources/documents/UPnP_UDA_tutorial_July2014.pdf
+ */
+
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -37,6 +64,7 @@ public class MainWindow extends Application{
     @FXML private Button btnConnect;
     @FXML private Button btnAddPort;
     @FXML private Button btnRemovePort;
+    @FXML private Button btnRefresh;
 
     @FXML public TextArea txtLog;
 
@@ -56,6 +84,8 @@ public class MainWindow extends Application{
         tcExternal.setCellValueFactory(new PropertyValueFactory<>("externalPort"));
         tcProtocol.setCellValueFactory(new PropertyValueFactory<>("protocol"));
         tcDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        txtLog.clear();
+        txtLog.appendText("UltraUPnP GUI v" + UltraUPnP.VERSION + " - IS_BETA: " + UltraUPnP.IS_BETA + "\n");
     }
 
 
@@ -69,14 +99,23 @@ public class MainWindow extends Application{
                     Platform.runLater(() -> {
                         btnAddPort.setDisable(false);
                         btnRemovePort.setDisable(false);
+                        btnRefresh.setDisable(false);
                         btnConnect.setDisable(true);
                     });
                     listPortMappings();
+                }else{
+                    Platform.runLater(() -> btnConnect.setDisable(false));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    @FXML
+    private void refresh(){
+        tableView.getItems().clear();
+        listPortMappings();
     }
 
     @FXML
@@ -125,8 +164,6 @@ public class MainWindow extends Application{
             String description = "";
 
             for(Router.RouterArgument ra: routerArguments) {
-                //Log.info("RESPONSE: <" + ra.getArgName() + ">" + ra.getArgValue() + "</" + ra.getArgName() + ">");
-
                 switch (ra.getArgName()) {
                     case "NewInternalClient":
                         host = ra.getArgValue();
@@ -178,6 +215,10 @@ public class MainWindow extends Application{
     }
 
     public static void main(String[] args){
-        launch(args);
+        if(args.length > 0){
+            new UltraUPnP(args);
+        }else {
+            launch(args);
+        }
     }
 }

@@ -27,9 +27,10 @@
          <bottom>
             <ButtonBar prefHeight="40.0" prefWidth="1074.0" BorderPane.alignment="CENTER">
               <buttons>
-                  <Button fx:id="btnRemovePort" disable="true" mnemonicParsing="false" text="Remove Port" onAction="#remove" />
-                  <Button fx:id="btnAddPort" disable="true" mnemonicParsing="false" text="Add Port" onAction="#add"/>
-                <Button fx:id="btnConnect" mnemonicParsing="false" text="Connect" onAction="#connect" />
+                  <Button fx:id="btnRefresh" disable="true" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
+                  <Button fx:id="btnRemovePort" disable="true" mnemonicParsing="false" onAction="#remove" text="Remove Port" />
+                  <Button fx:id="btnAddPort" disable="true" mnemonicParsing="false" onAction="#add" text="Add Port" />
+                <Button fx:id="btnConnect" mnemonicParsing="false" onAction="#connect" text="Connect" />
               </buttons>
             </ButtonBar>
          </bottom>

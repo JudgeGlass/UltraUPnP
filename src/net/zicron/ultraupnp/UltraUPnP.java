@@ -28,24 +28,14 @@ package net.zicron.ultraupnp;
 
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.List;
 
 public class UltraUPnP {
-    public static final String VERSION = "1.1.2";
+    public static final String VERSION = "1.2.0";
     public static final boolean IS_BETA = false;
 
-    public static void main(String[] args){
-        if(args.length <= 0){
-            System.out.println("Usage: UltraUPnP.jar\nAdd: -add -externalPort <INT> -internalPort <INT> -host <STRING> -proto <String: UDP|TCP>\n" +
-                               "Remove: -remove -externalPort <INT> -host <STRING> -proto <String: UDP|TCP>");
-            return;
-        }
-        Log.info("Starting UltraUPnP v" + VERSION + "...");
-        new UltraUPnP(args);
-    }
-
     public UltraUPnP(String[] args){
+        Log.info("Starting UltraUPnP v" + VERSION + "...");
         RouterFinder routerFinder = new RouterFinder();
         Router router = null;
         try {
@@ -145,6 +135,6 @@ public class UltraUPnP {
         //router.portForward(internPort, externPort, host, proto);
         //router.removeMapping(7979, "192.168.86.54", Router.TCP);
 
-
+        System.exit(0);
     }
 }
