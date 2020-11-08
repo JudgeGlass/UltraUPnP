@@ -212,7 +212,7 @@ public class Router {
         Log.info("Router Response: " + code + " " + response);
 
         if(code != 200){
-            Log.error("There was an error processing your request! Router response: " + code);
+            Log.error("There was an error processing your request! Router response: " + code + " (This is normal for GetPortMappings list)");
             connection.disconnect();
             return null;
         }

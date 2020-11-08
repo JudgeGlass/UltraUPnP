@@ -4,7 +4,7 @@ UltraUPnP is a standalone jar / library that can be used to forward ports on a r
 # Requirements
 - UPnP enabled on your router.
 - UPnP compatible router.
-- Internet Connection required (Linux only)
+- Internet Connection required
 - Java 8+
 
 

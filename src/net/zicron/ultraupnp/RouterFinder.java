@@ -48,7 +48,7 @@ public class RouterFinder {
         SSDPMessage.append("ST: urn:schemas-upnp-org:device:InternetGatewayDevice:1\r\n");
         SSDPMessage.append("MAN: \"ssdp:discover\"\r\n");
         SSDPMessage.append("MX: " + SSDP_RESPONSE_DELAY + "\r\n");
-        SSDPMessage.append("\n");
+        SSDPMessage.append("\n"); // Some routers are picky and need this
 
 
         byte[] messageArray = SSDPMessage.toString().getBytes();
@@ -56,26 +56,12 @@ public class RouterFinder {
         DatagramPacket messagePacket = new DatagramPacket(messageArray, messageArray.length, messageSocketAddress);
 
 
-        Log.info("Finding network interfaces...");
-        String localIP = InetAddress.getLocalHost().toString();
-        Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
-        for (NetworkInterface netint : Collections.list(nets)) { // For Windows, finds the loopback interface.
-            InetAddress loopBack = getLoopbackAddress(netint);
-            if(loopBack != null){
-                Log.info("Loopback address found at " + loopBack.getHostAddress() + " on interface \"" + netint.getName() + "\"");
-                localIP = loopBack.getHostAddress();
-            }
-        }
+        String localIP;
 
-        Log.debug("Local address: " + localIP);
-
-        if(System.getProperty("os.name").contains("Linux")){ // Can't find loopback interface on some distros; have to use Google.
-            Log.debug("System detected as Linux");
-            try(final DatagramSocket socket = new DatagramSocket()){
-                socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-                localIP = socket.getLocalAddress().getHostAddress();
-                Log.info("Loopback address changed to: " + localIP);
-            }
+        try(final DatagramSocket socket = new DatagramSocket()){
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            localIP = socket.getLocalAddress().getHostAddress();
+            Log.info("Local host address: " + localIP);
         }
 
 
@@ -116,20 +102,6 @@ public class RouterFinder {
         captureSocket.close();
 
         return !UPNPUrl.isEmpty();
-    }
-
-    public InetAddress getLoopbackAddress(NetworkInterface netint) {
-        //Log.debug("Display name: " + netint.getDisplayName());
-        //Log.debug("Name: " + netint.getName());
-        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
-        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-            //Log.debug("InetAddress: " + inetAddress);
-            if(inetAddress.isLoopbackAddress()){
-                return inetAddress;
-            }
-        }
-
-        return null;
     }
 
     public String getUPNPUrlDescriptor(){
