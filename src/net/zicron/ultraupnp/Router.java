@@ -30,8 +30,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -109,7 +108,7 @@ public class Router {
     }
 
     public void portForward(int internalPort, int externalPort, String host, String proto, String description) throws IOException {
-        Log.debug("Port Forwarding...");
+        Log.info("Attempting: " + getExternalIPAddress() + ":" + externalPort + " --> " + getInternalAddress() + ":" + internalPort);
         List<RouterArgument> routerArguments = new ArrayList<>();
         routerArguments.add(new RouterArgument("NewRemoteHost", ""));
         routerArguments.add(new RouterArgument("NewProtocol", proto));
@@ -238,5 +237,17 @@ public class Router {
         connection.disconnect();
 
         return routerResponse;
+    }
+
+    public static String getInternalAddress(){
+        try {
+            DatagramSocket socket = new DatagramSocket();
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            return socket.getLocalAddress().getHostAddress();
+        }catch (UnknownHostException | SocketException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 }

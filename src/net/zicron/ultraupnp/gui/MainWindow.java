@@ -104,7 +104,7 @@ public class MainWindow extends Application{
     @FXML
     private void add() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddMappingWindow.fxml"));
-        loader.setController(new AddPortMapping(tableView));
+        loader.setController(new AddPortMapping(tableView, router));
         Parent root = loader.load();
 
         Stage stage = new Stage();

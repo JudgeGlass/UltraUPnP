@@ -48,9 +48,11 @@ public class Log {
     }
 
     public static void debug(String message) {
-        if(UltraUPnP.IS_BETA) System.out.println("[DEBUG] " + message);
-        if(MainWindow.currentMainWindow != null){
-            MainWindow.currentMainWindow.appendToLog("[DEBUG] " + message + "\n");
+        if(UltraUPnP.IS_BETA) {
+            System.out.println("[DEBUG] " + message);
+            if (MainWindow.currentMainWindow != null) {
+                MainWindow.currentMainWindow.appendToLog("[DEBUG] " + message + "\n");
+            }
         }
     }
 }

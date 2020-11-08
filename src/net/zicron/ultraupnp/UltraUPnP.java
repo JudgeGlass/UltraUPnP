@@ -33,7 +33,7 @@ import java.util.List;
 
 public class UltraUPnP {
     public static final String VERSION = "1.1.2";
-    public static final boolean IS_BETA = true;
+    public static final boolean IS_BETA = false;
 
     public static void main(String[] args){
         if(args.length <= 0){
@@ -61,7 +61,6 @@ public class UltraUPnP {
 
     public void addPortMapping(String[] args, Router router, CommandParser currentParser) throws IOException{
         currentParser.add(args);
-        Log.info("Attempting: " + router.getExternalIPAddress() + ":" + currentParser.externalPort + " --> " + InetAddress.getLocalHost().toString() + ":" + currentParser.internalPort);
         int internalPort = currentParser.internalPort;
         int externalPort = currentParser.externalPort;
         String host = currentParser.host;
