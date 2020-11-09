@@ -124,7 +124,13 @@ public class AddPortMapping {
         if(savedPortMappings == null){
             savedPortMappings = new ArrayList<>();
         }
-        savedPortMappings.add(new PortMapping(hostname, txtInternalPort.getText(), txtExternalPort.getText(), ((bothProto) ? "both" : proto), description));
+        PortMapping newPortMapping = new PortMapping(hostname, txtInternalPort.getText(), txtExternalPort.getText(), ((bothProto) ? "both" : proto), description);
+
+        if(!newPortMapping.getExternalPort().equals(Integer.toString(externalPort)) && !newPortMapping.getInternalPort().equals(Integer.toString(internalPort))
+           && !newPortMapping.getHostname().equals(hostname)){
+            savedPortMappings.add(newPortMapping);
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
         for(PortMapping p:  savedPortMappings){
 
