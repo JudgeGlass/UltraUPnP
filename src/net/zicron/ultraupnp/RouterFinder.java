@@ -23,8 +23,6 @@ package net.zicron.ultraupnp;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.Collections;
-import java.util.Enumeration;
 
 public class RouterFinder {
     private final int SSDP_PORT = 1900;
@@ -93,7 +91,8 @@ public class RouterFinder {
                     UPNPUrl = url;
                 }
             }catch (SocketTimeoutException e){
-                Log.warn("TIMED OUT. Please wait...");
+                if(UPNPUrl.isEmpty())
+                    Log.warn("TIMED OUT.");
                 break;
             }
         }

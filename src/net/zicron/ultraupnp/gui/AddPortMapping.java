@@ -95,6 +95,21 @@ public class AddPortMapping {
         int index = saveList.getSelectionModel().getSelectedIndex();
         savedPortMappings.remove(index);
         saveList.getItems().remove(index);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for(PortMapping p:  savedPortMappings){
+            stringBuilder.append("PORT-ENTRY:");
+            stringBuilder.append(p.getHostname()).append(":");
+            stringBuilder.append(p.getProtocol()).append(":");
+            stringBuilder.append(p.getExternalPort()).append(":");
+            stringBuilder.append(p.getInternalPort()).append(":");
+            stringBuilder.append(p.getDescription()).append(":");
+            stringBuilder.append(p.getProtocol());
+
+            stringBuilder.append("\n");
+        }
+
+        SaveData.writeFile("ultraupnp-data.dat", stringBuilder.toString());
     }
 
     @FXML
@@ -112,6 +127,7 @@ public class AddPortMapping {
         savedPortMappings.add(new PortMapping(hostname, txtInternalPort.getText(), txtExternalPort.getText(), ((bothProto) ? "both" : proto), description));
         StringBuilder stringBuilder = new StringBuilder();
         for(PortMapping p:  savedPortMappings){
+
             stringBuilder.append("PORT-ENTRY:");
             stringBuilder.append(p.getHostname()).append(":");
             stringBuilder.append(p.getProtocol()).append(":");

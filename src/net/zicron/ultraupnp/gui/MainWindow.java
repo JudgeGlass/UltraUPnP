@@ -91,6 +91,7 @@ public class MainWindow extends Application{
 
     @FXML
     private void connect(){
+        btnConnect.setDisable(true);
         new Thread(() -> {
             routerFinder = new RouterFinder();
             try {

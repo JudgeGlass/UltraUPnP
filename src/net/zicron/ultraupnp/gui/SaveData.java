@@ -27,6 +27,8 @@ package net.zicron.ultraupnp.gui;
  */
 
 
+import net.zicron.ultraupnp.Log;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,7 @@ public class SaveData {
     }
 
     public static void writeFile(String fileName, String txt) {
+        Log.info("Writing save...");
         try {
             PrintWriter writer = new PrintWriter(fileName, "UTF-8");
             writer.print(txt);
