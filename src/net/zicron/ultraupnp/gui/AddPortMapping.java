@@ -129,23 +129,24 @@ public class AddPortMapping {
         if(!newPortMapping.getExternalPort().equals(Integer.toString(externalPort)) && !newPortMapping.getInternalPort().equals(Integer.toString(internalPort))
            && !newPortMapping.getHostname().equals(hostname)){
             savedPortMappings.add(newPortMapping);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            for(PortMapping p:  savedPortMappings){
+
+                stringBuilder.append("PORT-ENTRY:");
+                stringBuilder.append(p.getHostname()).append(":");
+                stringBuilder.append(p.getProtocol()).append(":");
+                stringBuilder.append(p.getExternalPort()).append(":");
+                stringBuilder.append(p.getInternalPort()).append(":");
+                stringBuilder.append(p.getDescription()).append(":");
+                stringBuilder.append(p.getProtocol());
+
+                stringBuilder.append("\n");
+            }
+
+            SaveData.writeFile("ultraupnp-data.dat", stringBuilder.toString());
         }
 
-        StringBuilder stringBuilder = new StringBuilder();
-        for(PortMapping p:  savedPortMappings){
-
-            stringBuilder.append("PORT-ENTRY:");
-            stringBuilder.append(p.getHostname()).append(":");
-            stringBuilder.append(p.getProtocol()).append(":");
-            stringBuilder.append(p.getExternalPort()).append(":");
-            stringBuilder.append(p.getInternalPort()).append(":");
-            stringBuilder.append(p.getDescription()).append(":");
-            stringBuilder.append(p.getProtocol());
-
-            stringBuilder.append("\n");
-        }
-
-        SaveData.writeFile("ultraupnp-data.dat", stringBuilder.toString());
 
         Stage window = (Stage) btnAdd.getScene().getWindow();
         window.close();

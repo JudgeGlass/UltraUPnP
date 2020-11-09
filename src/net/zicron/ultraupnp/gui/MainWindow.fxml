@@ -29,7 +29,7 @@
               <buttons>
                   <Button fx:id="btnRefresh" disable="true" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
                   <Button fx:id="btnRemovePort" disable="true" mnemonicParsing="false" onAction="#remove" text="Remove Port" />
-                  <Button fx:id="btnAddPort" disable="true" mnemonicParsing="false" onAction="#add" text="Add Port" />
+                  <Button fx:id="btnAddPort" disable="false" mnemonicParsing="false" onAction="#add" text="Add Port" />
                 <Button fx:id="btnConnect" mnemonicParsing="false" onAction="#connect" text="Connect" />
               </buttons>
             </ButtonBar>
