@@ -29,7 +29,7 @@
               <buttons>
                   <Button fx:id="btnRefresh" disable="true" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
                   <Button fx:id="btnRemovePort" disable="true" mnemonicParsing="false" onAction="#remove" text="Remove Port" />
-                  <Button fx:id="btnAddPort" disable="false" mnemonicParsing="false" onAction="#add" text="Add Port" />
+                  <Button fx:id="btnAddPort" disable="true" mnemonicParsing="false" onAction="#add" text="Add Port" />
                 <Button fx:id="btnConnect" mnemonicParsing="false" onAction="#connect" text="Connect" />
               </buttons>
             </ButtonBar>
@@ -37,11 +37,11 @@
          <top>
             <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
-                <TableColumn fx:id="tcHost" prefWidth="390.0" text="Host" />
-                <TableColumn fx:id="tcInternal" prefWidth="90.0" text="Internal Port" />
-                  <TableColumn fx:id="tcExternal" prefWidth="108.0" text="External Port" />
-                  <TableColumn fx:id="tcProtocol" prefWidth="97.0" text="Protocol" />
-                  <TableColumn fx:id="tcDescription" prefWidth="386.0" text="Description" />
+                <TableColumn fx:id="tcHost" prefWidth="332.40000915527344" text="Host" />
+                <TableColumn fx:id="tcInternal" prefWidth="154.80001831054688" text="Internal Port" />
+                  <TableColumn fx:id="tcExternal" prefWidth="125.199951171875" text="External Port" />
+                  <TableColumn fx:id="tcProtocol" prefWidth="109.0" text="Protocol" />
+                  <TableColumn fx:id="tcDescription" prefWidth="352.4000244140625" text="Description" />
               </columns>
             </TableView>
          </top>

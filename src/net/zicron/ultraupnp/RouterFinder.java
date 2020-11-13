@@ -25,11 +25,11 @@ import java.io.IOException;
 import java.net.*;
 
 public class RouterFinder {
-    private final int SSDP_PORT = 1900;
-    private final int SSDP_SEARCH_PORT = 1901;
-    private final int SSDP_RESPONSE_DELAY = 2; // Seconds
+    public final int SSDP_PORT = 1900;
+    public final int SSDP_SEARCH_PORT = 1901;
+    public final int SSDP_RESPONSE_DELAY = 2; // Seconds
 
-    private final String SSDP_IP = "239.255.255.250";
+    public final String SSDP_IP = "239.255.255.250";
 
     private String UPNPUrl = "";
 

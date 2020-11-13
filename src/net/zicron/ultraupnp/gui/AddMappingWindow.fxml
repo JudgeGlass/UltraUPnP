@@ -5,20 +5,21 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="323.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="14.0" layoutY="14.0" text="Previous Saves" />
-      <ListView fx:id="saveList" layoutX="14.0" layoutY="31.0" prefHeight="200.0" prefWidth="578.0" onMouseClicked="#selectMapping"/>
-      <Label layoutX="14.0" layoutY="231.0" text="Host (Not always supported)" />
-      <Label layoutX="192.0" layoutY="231.0" text="Internal Port" />
-      <Label layoutX="302.0" layoutY="231.0" text="External Port" />
-      <Label layoutX="413.0" layoutY="231.0" text="Description" />
-      <TextField fx:id="txtHost" layoutX="14.0" layoutY="248.0" />
-      <TextField fx:id="txtInternalPort" layoutX="192.0" layoutY="248.0" prefHeight="25.0" prefWidth="78.0" />
-      <TextField fx:id="txtExternalPort" layoutX="301.0" layoutY="248.0" prefHeight="25.0" prefWidth="78.0" />
-      <TextField fx:id="txtDescription" layoutX="413.0" layoutY="248.0" prefHeight="25.0" prefWidth="177.0" />
-      <Button fx:id="btnAdd" layoutX="497.0" layoutY="284.0" mnemonicParsing="false" onAction="#add" text="Add Mapping" />
+      <Label layoutX="14.0" layoutY="14.0" text="Previous Mappings" />
+      <ListView fx:id="saveList" layoutX="14.0" layoutY="31.0" onMouseClicked="#selectMapping" prefHeight="200.0" prefWidth="578.0" />
+      <Label layoutX="14.0" layoutY="231.0" text="Host" />
+      <Label layoutX="173.0" layoutY="231.0" text="Internal Port" />
+      <Label layoutX="283.0" layoutY="231.0" text="External Port" />
+      <Label layoutX="394.0" layoutY="231.0" text="Description" />
+      <TextField fx:id="txtHost" layoutX="14.0" layoutY="248.0" prefWidth="130.0" />
+      <TextField fx:id="txtInternalPort" layoutX="173.0" layoutY="248.0" prefHeight="25.0" prefWidth="78.0" />
+      <TextField fx:id="txtExternalPort" layoutX="282.0" layoutY="248.0" prefHeight="25.0" prefWidth="78.0" />
+      <TextField fx:id="txtDescription" layoutX="394.0" layoutY="248.0" prefHeight="25.0" prefWidth="177.0" />
+      <Button fx:id="btnAdd" layoutX="483.0" layoutY="284.0" mnemonicParsing="false" onAction="#add" text="Add Mapping" />
       <CheckBox fx:id="chkTCP" layoutX="413.0" layoutY="288.0" mnemonicParsing="false" selected="true" text="TCP" />
       <CheckBox fx:id="chkUDP" layoutX="357.0" layoutY="288.0" mnemonicParsing="false" text="UDP" />
       <Label layoutX="292.0" layoutY="288.0" text="Protocol:" />
-      <Button fx:id="btnDelete" disable="true" layoutX="14.0" layoutY="284.0" mnemonicParsing="false" text="Delete" onAction="#deleteMapping" />
+      <Button fx:id="btnDelete" disable="true" layoutX="14.0" layoutY="284.0" mnemonicParsing="false" onAction="#deleteMapping" text="Delete" />
+      <Button fx:id="btnCancel" layoutX="79.0" layoutY="284.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
    </children>
 </AnchorPane>

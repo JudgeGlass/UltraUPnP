@@ -106,7 +106,7 @@ public class Router {
         portForward(internalPort, externalPort, host, proto, "UltraUPnP");
     }
 
-    public void portForward(int internalPort, int externalPort, String host, String proto, String description) throws IOException {
+    public List<RouterArgument> portForward(int internalPort, int externalPort, String host, String proto, String description) throws IOException {
         Log.info("Attempting: " + getExternalIPAddress() + ":" + externalPort + " --> " + getInternalAddress() + ":" + internalPort);
         List<RouterArgument> routerArguments = new ArrayList<>();
         routerArguments.add(new RouterArgument("NewRemoteHost", ""));
@@ -117,8 +117,10 @@ public class Router {
         routerArguments.add(new RouterArgument("NewPortMappingDescription", description));
         routerArguments.add(new RouterArgument("NewLeaseDuration", "0"));
 
-        sendCommand("AddPortMapping", routerArguments);
+        List<RouterArgument> resp = sendCommand("AddPortMapping", routerArguments);
         routerArguments.clear();
+
+        return resp;
     }
 
     public void removeMapping(int externalPort, String host, String proto) throws IOException {
@@ -209,13 +211,14 @@ public class Router {
         String response = connection.getResponseMessage();
         Log.info("Router Response: " + code + " " + response);
 
+        List<RouterArgument> routerResponse = new ArrayList<>();
         if(code != 200){
             Log.error("There was an error processing your request! Router response: " + code + " (This is normal for GetPortMappings list)");
             connection.disconnect();
             return null;
         }
 
-        List<RouterArgument> routerResponse = new ArrayList<>();
+
         try {
             Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(connection.getInputStream());
             String tagName = "u:" + action + "Response";

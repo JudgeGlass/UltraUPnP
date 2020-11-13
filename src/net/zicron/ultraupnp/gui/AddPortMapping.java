@@ -47,6 +47,7 @@ public class AddPortMapping {
     @FXML private CheckBox chkUDP;
     @FXML private Button btnAdd;
     @FXML private Button btnDelete;
+    @FXML private Button btnCancel;
 
     private TableView<PortMapping> tableView;
     private List<PortMapping> savedPortMappings;
@@ -91,6 +92,12 @@ public class AddPortMapping {
     }
 
     @FXML
+    private void cancel(){
+        Stage window = (Stage) btnCancel.getScene().getWindow();
+        window.close();
+    }
+
+    @FXML
     private void deleteMapping(){
         int index = saveList.getSelectionModel().getSelectedIndex();
         savedPortMappings.remove(index);
@@ -126,6 +133,7 @@ public class AddPortMapping {
         }
         PortMapping newPortMapping = new PortMapping(hostname, txtInternalPort.getText(), txtExternalPort.getText(), ((bothProto) ? "both" : proto), description);
 
+        //This looks horrible. I'll fix later
         if(!newPortMapping.getExternalPort().equals(Integer.toString(externalPort)) && !newPortMapping.getInternalPort().equals(Integer.toString(internalPort))
            && !newPortMapping.getHostname().equals(hostname)){
             savedPortMappings.add(newPortMapping);
@@ -151,23 +159,31 @@ public class AddPortMapping {
         Stage window = (Stage) btnAdd.getScene().getWindow();
         window.close();
 
+
+
         new Thread(() -> {
+            boolean b1Ok = false;
+            boolean b2Ok = false;
+            boolean ok = false;
             try {
                 if(!bothProto) {
-                    router.portForward(internalPort, externalPort, hostname, proto, description);
+                    ok = (router.portForward(internalPort, externalPort, hostname, proto, description) != null);
                 }else{
-                    router.portForward(internalPort, externalPort, hostname, Router.TCP, description);
-                    router.portForward(internalPort, externalPort, hostname, Router.UDP, description);
+                    b1Ok = (router.portForward(internalPort, externalPort, hostname, Router.TCP, description) != null);
+                    b2Ok = (router.portForward(internalPort, externalPort, hostname, Router.UDP, description) != null);
                 }
             } catch (IOException e) {
                 Log.error(e.getMessage());
                 e.printStackTrace();
             }
             if(bothProto){
-                tableView.getItems().add(new PortMapping(hostname, Integer.toString(internalPort), Integer.toString(externalPort), Router.TCP, description));
-                tableView.getItems().add(new PortMapping(hostname, Integer.toString(internalPort), Integer.toString(externalPort), Router.UDP, description));
+                if(b1Ok)
+                    tableView.getItems().add(new PortMapping(hostname, Integer.toString(internalPort), Integer.toString(externalPort), Router.TCP, description));
+                if(b2Ok)
+                    tableView.getItems().add(new PortMapping(hostname, Integer.toString(internalPort), Integer.toString(externalPort), Router.UDP, description));
             }else{
-                tableView.getItems().add(new PortMapping(hostname, Integer.toString(internalPort), Integer.toString(externalPort), proto, description));
+                if(ok)
+                    tableView.getItems().add(new PortMapping(hostname, Integer.toString(internalPort), Integer.toString(externalPort), proto, description));
             }
         }).start();
     }
