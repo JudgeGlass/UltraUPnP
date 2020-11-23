@@ -95,7 +95,7 @@ public class Router {
                 }
             }
 
-            if(serviceType.toLowerCase().contains(":wanipconnection:")){
+            if(serviceType.toLowerCase().contains(":wanipconnection:") || serviceType.toLowerCase().contains(":wanpppcontion:")){
                 this.serviceType = serviceType;
                 this.controlUrl = UPNPUrl.substring(0, UPNPUrl.indexOf("/", 7)) + controlUrl;
             }
@@ -183,8 +183,8 @@ public class Router {
     }
 
     private List<RouterArgument> sendCommand(String action, List<RouterArgument> routerArguments) throws IOException {
-        String SOAPData = "<?xml version=\"1.0\"?>\r\n<SOAP-ENV:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\r\n" +
-                "<SOAP-ENV:Body>\r\n" +
+        String SOAPData = "<?xml version=\"1.0\"?>\r\n<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\r\n" +
+                "<s:Body>\r\n" +
                 "<m:" + action + " xmlns:m=\"" + serviceType + "\">\r\n";
 
         for(RouterArgument routerArgument: routerArguments) {
@@ -192,8 +192,8 @@ public class Router {
         }
 
         SOAPData += "</m:" + action + ">\r\n" +
-                "</SOAP-ENV:Body>\r\n" +
-                "</SOAP-ENV:Envelope>\r\n";
+                "</s:Body>\r\n" +
+                "</s:Envelope>\r\n";
 
         Log.debug("SOAP DATA: \n" + SOAPData);
 
