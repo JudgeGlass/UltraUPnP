@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="742.0" prefWidth="1074.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.zicron.ultraupnp.gui.MainWindow">
+<VBox prefHeight="742.0" prefWidth="1074.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.zicron.ultraupnp.gui.MainWindow">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -27,6 +27,7 @@
          <bottom>
             <ButtonBar prefHeight="40.0" prefWidth="1074.0" BorderPane.alignment="CENTER">
               <buttons>
+                  <Button fx:id="btnAdvanced" disable="true" mnemonicParsing="false" text="Advanced" />
                   <Button fx:id="btnRefresh" disable="true" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
                   <Button fx:id="btnRemovePort" disable="true" mnemonicParsing="false" onAction="#remove" text="Remove Port" />
                   <Button fx:id="btnAddPort" disable="true" mnemonicParsing="false" onAction="#add" text="Add Port" />

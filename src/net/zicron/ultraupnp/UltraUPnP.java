@@ -31,10 +31,29 @@ import java.io.IOException;
 import java.util.List;
 
 public class UltraUPnP {
-    public static final String VERSION = "1.2.0";
-    public static final boolean IS_BETA = false;
+    public static final String VERSION = "1.2.1";
+    public static boolean IS_BETA = false;
+    public static boolean isConsole = true;
 
     public UltraUPnP(String[] args){
+        if(args[0].equals("-version")){
+            Log.info("UltraUPnP - v" + VERSION);
+            Log.info("Copyright (c) 2020-2021 Hunter Wilcox");
+            Log.info("Github: https://github.com/Zicron-Technologies/UltraUPnP");
+            return;
+        }
+
+        if(args[0].equals("-help")){
+            Log.info("Add port mapping: -add -externalPort <INT> -internalPort <INT> -host <String: address> -proto <String: TCP or UDP> -desc <String: Optional>");
+            Log.info("Remove port mapping: -remove -externalPort <INT> -host <String: address> -proto <String: TCP or UDP>");
+            Log.info("List port mappings: -list");
+            Log.info("Get external IP address: -externalAddress");
+            Log.info("Get version info: -version");
+            Log.info("You can also add the argument '-noquiet' to the end of all of these to get the debug output.");
+            return;
+        }
+
+
         Log.info("Starting UltraUPnP v" + VERSION + "...");
         RouterFinder routerFinder = new RouterFinder();
         Router router = null;
@@ -112,6 +131,13 @@ public class UltraUPnP {
 
 
     private void handleCommand(String[] args, Router router) throws IOException{
+        for(String arg: args){
+            if(arg.equals("-noquiet")){
+                IS_BETA = true;
+            }
+        }
+
+
         switch (args[0]){
             case "-add":
                 addPortMapping(args, router, CommandParser.currentParser);

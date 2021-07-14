@@ -29,6 +29,8 @@ public class CommandParser {
                 case "-desc":
                     description = value;
                     break;
+                case "-noquiet":
+                    break;
                 default:
                     Log.error("[PARSER] Unknown Argument: " + args[i]);
             }
@@ -47,6 +49,8 @@ public class CommandParser {
                     break;
                 case "-proto":
                     protocol = value.toUpperCase();
+                    break;
+                case "-noquiet":
                     break;
                 default:
                     Log.error("[PARSER] Unknown Argument: " + args[i]);

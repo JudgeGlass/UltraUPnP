@@ -65,6 +65,7 @@ public class MainWindow extends Application{
     @FXML private Button btnAddPort;
     @FXML private Button btnRemovePort;
     @FXML private Button btnRefresh;
+    @FXML private Button btnAdvanced;
 
     @FXML public TextArea txtLog;
 
@@ -102,6 +103,7 @@ public class MainWindow extends Application{
                         btnRemovePort.setDisable(false);
                         btnRefresh.setDisable(false);
                         btnConnect.setDisable(true);
+                        btnAdvanced.setDisable(false);
                     });
                     listPortMappings();
                 }else{
@@ -122,6 +124,11 @@ public class MainWindow extends Application{
     @FXML
     private void remove(){
         PortMapping selectedPortMapping = tableView.getSelectionModel().getSelectedItem();
+        if(selectedPortMapping == null){
+            Log.error("Couldn't remove mapping: Nothing selected!");
+            return;
+        }
+
         btnAddPort.setDisable(true);
         btnRemovePort.setDisable(true);
         Log.debug("PORT HOST: " + selectedPortMapping.getHostname());
@@ -215,11 +222,7 @@ public class MainWindow extends Application{
         primaryStage.show();
     }
 
-    public static void main(String[] args){
-        if(args.length > 0){
-            new UltraUPnP(args);
-        }else {
-            launch(args);
-        }
+    public void run(String[] args){
+        launch(args);
     }
 }
