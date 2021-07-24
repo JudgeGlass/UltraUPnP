@@ -89,10 +89,11 @@ public class RouterFinder {
                     Log.info("Router found!");
                     Log.info("ROUTER URL: " + url);
                     UPNPUrl = url;
+                    break;
                 }
             }catch (SocketTimeoutException e){
                 if(UPNPUrl.isEmpty())
-                    Log.warn("TIMED OUT.");
+                    Log.warn("TIMED OUT. Please try again.");
                 break;
             }
         }

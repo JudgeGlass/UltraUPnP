@@ -169,13 +169,17 @@ public class Router {
 
         List<RouterArgument> response;
         List<RouterArgument> mappings = new ArrayList<>();
-        int counter = 0;
+        int counter = 1;
 
         // Kind of a bad way of doing it, but it works?
         while((response = sendCommand("GetGenericPortMappingEntry", routerArguments)) != null){
             routerArguments.get(0).argValue = Integer.toString(counter);
             mappings.addAll(response);
             counter++;
+        }
+
+        for(int i = 0; i < mappings.size(); i++){
+            Log.debug("COUNT: " + i +"<"+mappings.get(i).argName+">" + mappings.get(i).argValue + "</" + mappings.get(i).argName + ">");
         }
 
         routerArguments.clear();

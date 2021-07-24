@@ -73,6 +73,7 @@ public class AddPortMapping {
 
     @FXML
     private void selectMapping(){
+        if(saveList.getSelectionModel().getSelectedIndex() < 0) return;
         PortMapping portMapping = savedPortMappings.get(saveList.getSelectionModel().getSelectedIndex());
         chkUDP.setSelected(false);
         chkTCP.setSelected(false);
@@ -134,8 +135,7 @@ public class AddPortMapping {
         PortMapping newPortMapping = new PortMapping(hostname, txtInternalPort.getText(), txtExternalPort.getText(), ((bothProto) ? "both" : proto), description);
 
         //This looks horrible. I'll fix later
-        if(!newPortMapping.getExternalPort().equals(Integer.toString(externalPort)) && !newPortMapping.getInternalPort().equals(Integer.toString(internalPort))
-           && !newPortMapping.getHostname().equals(hostname)){
+        if(true){
             savedPortMappings.add(newPortMapping);
 
             StringBuilder stringBuilder = new StringBuilder();
