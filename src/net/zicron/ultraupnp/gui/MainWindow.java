@@ -99,11 +99,9 @@ public class MainWindow extends Application{
                 if(routerFinder.search()){
                     router = new Router(routerFinder.getUPNPUrlDescriptor());
                     Platform.runLater(() -> {
-                        btnAddPort.setDisable(false);
                         btnRemovePort.setDisable(false);
                         btnRefresh.setDisable(false);
                         btnConnect.setDisable(true);
-                        btnAdvanced.setDisable(false);
                     });
                     listPortMappings();
                 }else{
@@ -129,7 +127,6 @@ public class MainWindow extends Application{
             return;
         }
 
-        btnAddPort.setDisable(true);
         btnRemovePort.setDisable(true);
         Log.debug("PORT HOST: " + selectedPortMapping.getHostname());
 
@@ -137,7 +134,6 @@ public class MainWindow extends Application{
             try {
                 router.removeMapping(Integer.parseInt(selectedPortMapping.getExternalPort()), selectedPortMapping.getHostname(), selectedPortMapping.getProtocol());
                 Platform.runLater(() -> {
-                    btnAddPort.setDisable(false);
                     btnRemovePort.setDisable(false);
                     tableView.getItems().remove(selectedPortMapping);
                 });
@@ -157,6 +153,19 @@ public class MainWindow extends Application{
         Stage stage = new Stage();
         stage.setTitle("UltraUPnP GUI - v" + UltraUPnP.VERSION + " - Add Port Mapping");
         stage.setScene(new Scene(root, 600, 320));
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    @FXML
+    private void advanced() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AdvanceWindow.fxml"));
+        loader.setController(new AdvancedWindow());
+        Parent root = loader.load();
+
+        Stage stage = new Stage();
+        stage.setTitle("UltraUPnP GUI - v" + UltraUPnP.VERSION + " - Advanced Settings");
+        stage.setScene(new Scene(root, 433, 99));
         stage.setResizable(false);
         stage.show();
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -27,12 +28,15 @@
          <bottom>
             <ButtonBar prefHeight="40.0" prefWidth="1074.0" BorderPane.alignment="CENTER">
               <buttons>
-                  <Button fx:id="btnAdvanced" disable="true" mnemonicParsing="false" text="Advanced" />
+                  <Button fx:id="btnAdvanced" mnemonicParsing="false" onAction="#advanced" text="Advanced" />
                   <Button fx:id="btnRefresh" disable="true" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
                   <Button fx:id="btnRemovePort" disable="true" mnemonicParsing="false" onAction="#remove" text="Remove Port" />
                   <Button fx:id="btnAddPort" disable="true" mnemonicParsing="false" onAction="#add" text="Add Port" />
                 <Button fx:id="btnConnect" mnemonicParsing="false" onAction="#connect" text="Connect" />
               </buttons>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
             </ButtonBar>
          </bottom>
          <top>
