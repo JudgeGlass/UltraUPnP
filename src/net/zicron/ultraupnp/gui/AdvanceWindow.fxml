@@ -6,13 +6,13 @@
 <AnchorPane prefHeight="99.0" prefWidth="433.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="SSDP Port:" />
-      <TextField layoutX="14.0" layoutY="31.0" prefHeight="25.0" prefWidth="99.0" />
+      <TextField layoutX="14.0" layoutY="31.0" prefHeight="25.0" prefWidth="99.0" fx:id="txtSSDPPort"/>
       <Label layoutX="128.0" layoutY="14.0" text="SSDP IP:" />
-      <TextField layoutX="128.0" layoutY="31.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField layoutX="128.0" layoutY="31.0" prefHeight="25.0" prefWidth="149.0" fx:id="txtSSDPIP"/>
       <Label layoutX="290.0" layoutY="14.0" text="Response Timeout (ms):" />
-      <TextField layoutX="290.0" layoutY="31.0" prefHeight="25.0" prefWidth="133.0" />
-      <CheckBox layoutX="14.0" layoutY="67.0" mnemonicParsing="false" text="Detailed output log" />
-      <Button layoutX="367.0" layoutY="63.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="56.0" text="OK" />
-      <Button layoutX="305.0" layoutY="63.0" mnemonicParsing="false" text="Cancel" />
+      <TextField layoutX="290.0" layoutY="31.0" prefHeight="25.0" prefWidth="133.0" fx:id="txtTimeout"/>
+      <CheckBox layoutX="14.0" layoutY="67.0" mnemonicParsing="false" text="Detailed output log" fx:id="chkShowDebug"/>
+      <Button layoutX="367.0" layoutY="63.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="56.0" text="OK" onAction="#exit" fx:id="btnOK"/>
+      <Button layoutX="305.0" layoutY="63.0" mnemonicParsing="false" text="Cancel" onAction="#cancel" fx:id="btnCancel"/>
    </children>
 </AnchorPane>

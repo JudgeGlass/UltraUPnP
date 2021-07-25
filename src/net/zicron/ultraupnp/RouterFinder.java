@@ -25,11 +25,12 @@ import java.io.IOException;
 import java.net.*;
 
 public class RouterFinder {
-    public final int SSDP_PORT = 1900;
+    public static int SSDP_PORT = 1900;
     public final int SSDP_SEARCH_PORT = 1901;
     public final int SSDP_RESPONSE_DELAY = 2; // Seconds
 
-    public final String SSDP_IP = "239.255.255.250";
+    public static String SSDP_IP = "239.255.255.250";
+    public static int TIMEOUT = 5000;
 
     private String UPNPUrl = "";
 
@@ -71,7 +72,7 @@ public class RouterFinder {
         multicastSocket.close();
 
         DatagramSocket captureSocket = new DatagramSocket(SSDP_SEARCH_PORT);
-        captureSocket.setSoTimeout(10000);
+        captureSocket.setSoTimeout(TIMEOUT);
         while(true) {
             try {
                 byte[] routerResponseArray = new byte[1024];

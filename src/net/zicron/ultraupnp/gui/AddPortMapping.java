@@ -135,25 +135,23 @@ public class AddPortMapping {
         PortMapping newPortMapping = new PortMapping(hostname, txtInternalPort.getText(), txtExternalPort.getText(), ((bothProto) ? "both" : proto), description);
 
         //This looks horrible. I'll fix later
-        if(true){
-            savedPortMappings.add(newPortMapping);
+        savedPortMappings.add(newPortMapping);
 
-            StringBuilder stringBuilder = new StringBuilder();
-            for(PortMapping p:  savedPortMappings){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(PortMapping p:  savedPortMappings){
 
-                stringBuilder.append("PORT-ENTRY:");
-                stringBuilder.append(p.getHostname()).append(":");
-                stringBuilder.append(p.getProtocol()).append(":");
-                stringBuilder.append(p.getExternalPort()).append(":");
-                stringBuilder.append(p.getInternalPort()).append(":");
-                stringBuilder.append(p.getDescription()).append(":");
-                stringBuilder.append(p.getProtocol());
+            stringBuilder.append("PORT-ENTRY:");
+            stringBuilder.append(p.getHostname()).append(":");
+            stringBuilder.append(p.getProtocol()).append(":");
+            stringBuilder.append(p.getExternalPort()).append(":");
+            stringBuilder.append(p.getInternalPort()).append(":");
+            stringBuilder.append(p.getDescription()).append(":");
+            stringBuilder.append(p.getProtocol());
 
-                stringBuilder.append("\n");
-            }
-
-            SaveData.writeFile("ultraupnp-data.dat", stringBuilder.toString());
+            stringBuilder.append("\n");
         }
+
+        SaveData.writeFile("ultraupnp-data.dat", stringBuilder.toString());
 
 
         Stage window = (Stage) btnAdd.getScene().getWindow();

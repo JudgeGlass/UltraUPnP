@@ -101,6 +101,7 @@ public class MainWindow extends Application{
                     Platform.runLater(() -> {
                         btnRemovePort.setDisable(false);
                         btnRefresh.setDisable(false);
+                        btnAddPort.setDisable(false);
                         btnConnect.setDisable(true);
                     });
                     listPortMappings();
@@ -199,7 +200,7 @@ public class MainWindow extends Application{
                         break;
                 }
 
-                if (!proto.isEmpty() && !host.isEmpty() && !externalPort.isEmpty() && !internalPort.isEmpty() && !proto.isEmpty()) {
+                if (!proto.isEmpty() && !host.isEmpty() && !externalPort.isEmpty() && !internalPort.isEmpty()) {
                     tableView.getItems().add(new PortMapping(host, internalPort, externalPort, proto, description));
                     host = "";
                     proto = "";
