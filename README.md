@@ -15,8 +15,14 @@ java -jar UltraUPnP1.0.0.jar -add -externalPort <INT> -internalPort <INT> -host 
 ```
 
 # Issues
-- This program may not work on some routers. I have only tested them on two different routers. If you have a solution to your router
-feel free to contribute it.
+- This program may not work on some routers. If you have a solution to your router feel free to contribute it.
+
+Known to work:
+- Google Nest Mesh v2 - Fully working
+- Linksys EA7500 - Fully working
+- Netgear Nighthawk RAX70 - Fully working, except GetExternalIPAddress due to MiniUPnPv1.2.0RC0 bug
+- Ubiquiti ERLite-3 - Fully working
+- TP-Link Deco X20 Mesh - Fully working
 
 # Resources Used
 http://upnp.org/specs/gw/UPnP-gw-WANIPConnection-v2-Service.pdf
