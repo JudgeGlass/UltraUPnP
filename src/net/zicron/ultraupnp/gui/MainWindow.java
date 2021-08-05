@@ -66,6 +66,7 @@ public class MainWindow extends Application{
     @FXML private Button btnRemovePort;
     @FXML private Button btnRefresh;
     @FXML private Button btnAdvanced;
+    @FXML private Button btnCustom;
 
     @FXML public TextArea txtLog;
 
@@ -102,6 +103,7 @@ public class MainWindow extends Application{
                         btnRemovePort.setDisable(false);
                         btnRefresh.setDisable(false);
                         btnAddPort.setDisable(false);
+                        btnCustom.setDisable(false);
                         btnConnect.setDisable(true);
                     });
                     listPortMappings();
@@ -167,6 +169,19 @@ public class MainWindow extends Application{
         Stage stage = new Stage();
         stage.setTitle("UltraUPnP GUI - v" + UltraUPnP.VERSION + " - Advanced Settings");
         stage.setScene(new Scene(root, 433, 99));
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    @FXML
+    private void custom() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomCommand.fxml"));
+        loader.setController(new CustomWindow());
+        Parent root = loader.load();
+
+        Stage stage = new Stage();
+        stage.setTitle("UltraUPnP GUI - v" + UltraUPnP.VERSION + " - Custom Command");
+        stage.setScene(new Scene(root, 545, 301));
         stage.setResizable(false);
         stage.show();
     }
