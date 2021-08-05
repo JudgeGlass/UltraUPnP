@@ -5,10 +5,10 @@
 
 <AnchorPane prefHeight="301.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="461.0" layoutY="269.0" mnemonicParsing="false" text="Send Action" />
-      <Button layoutX="405.0" layoutY="269.0" mnemonicParsing="false" text="Cancel" />
-      <TextArea layoutX="24.0" layoutY="87.0" prefHeight="200.0" prefWidth="259.0" promptText="ex. &lt;argument&gt;value&lt;/argument&gt;" />
-      <TextField layoutX="24.0" layoutY="36.0" prefHeight="25.0" prefWidth="259.0" promptText="ex. AddPortMapping" />
+      <Button layoutX="461.0" layoutY="269.0" mnemonicParsing="false" text="Send Action" onAction="#send"/>
+      <Button layoutX="405.0" layoutY="269.0" mnemonicParsing="false" text="Cancel" onAction="#cancel" />
+      <TextArea layoutX="24.0" layoutY="87.0" prefHeight="200.0" prefWidth="259.0" promptText="ex. &lt;argument&gt;value&lt;/argument&gt;" fx:id="txtArgs"/>
+      <TextField layoutX="24.0" layoutY="36.0" prefHeight="25.0" prefWidth="259.0" promptText="ex. AddPortMapping" fx:id="txtCommand"/>
       <Label layoutX="24.0" layoutY="14.0" text="Action:" />
       <Label layoutX="24.0" layoutY="70.0" text="Action Arguments:" />
       <Hyperlink layoutX="297.0" layoutY="81.0" prefHeight="23.0" prefWidth="224.0" text="http://upnp.org/specs/gw/UPnP-gw-WANIPConnection-v2-Service.pdf" wrapText="true" />

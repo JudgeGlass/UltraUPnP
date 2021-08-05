@@ -142,7 +142,7 @@ public class Router {
     public String getExternalIPAddress() throws IOException {
         Log.debug("Getting external IP Address");
         List<RouterArgument> routerArguments = new ArrayList<>();
-        //routerArguments.add(new RouterArgument("NewExternalIPAddress", "ExternalIPAddress"));
+        routerArguments.add(new RouterArgument("NewExternalIPAddress", "ExternalIPAddress"));
 
         List<RouterArgument> response = sendCommand("GetExternalIPAddress", routerArguments);
         routerArguments.clear();
@@ -196,7 +196,7 @@ public class Router {
         return mappings;
     }
 
-    private List<RouterArgument> sendCommand(String action, List<RouterArgument> routerArguments) throws IOException {
+    public List<RouterArgument> sendCommand(String action, List<RouterArgument> routerArguments) throws IOException {
         String SOAPData = "<?xml version=\"1.0\"?>\r\n<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\r\n" +
                 "<s:Body>\r\n" +
                 "<m:" + action + " xmlns:m=\"" + serviceType + "\">\r\n";

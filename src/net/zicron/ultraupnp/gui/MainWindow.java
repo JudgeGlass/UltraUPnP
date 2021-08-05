@@ -176,7 +176,7 @@ public class MainWindow extends Application{
     @FXML
     private void custom() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomCommand.fxml"));
-        loader.setController(new CustomWindow());
+        loader.setController(new CustomWindow(router));
         Parent root = loader.load();
 
         Stage stage = new Stage();
