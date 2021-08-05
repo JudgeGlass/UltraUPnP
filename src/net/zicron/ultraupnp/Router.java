@@ -29,7 +29,9 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,8 @@ public class Router {
 
     private String controlUrl;
     private String serviceType;
+
+    private boolean isConnected = false;
 
     public Router(String UPNPUrl){
         this.UPNPUrl = UPNPUrl;
@@ -98,6 +102,7 @@ public class Router {
             if(serviceType.toLowerCase().contains(":wanipconnection:") || serviceType.toLowerCase().contains(":wanpppcontion:")){
                 this.serviceType = serviceType;
                 this.controlUrl = UPNPUrl.substring(0, UPNPUrl.indexOf("/", 7)) + controlUrl;
+                isConnected = true;
             }
         }
     }
@@ -137,13 +142,18 @@ public class Router {
     public String getExternalIPAddress() throws IOException {
         Log.debug("Getting external IP Address");
         List<RouterArgument> routerArguments = new ArrayList<>();
-        routerArguments.add(new RouterArgument("NewExternalIPAddress", "ExternalIPAddress"));
+        //routerArguments.add(new RouterArgument("NewExternalIPAddress", "ExternalIPAddress"));
 
         List<RouterArgument> response = sendCommand("GetExternalIPAddress", routerArguments);
         routerArguments.clear();
 
-        if(response == null){
-            return "ROUTER RESPONDS: NULL";
+        if(response == null){ // If the router does not support this feature
+            Log.error("Could not get external address from router! Attempting third-party...");
+            URL url_name = new URL("http://bot.whatismyipaddress.com");
+            BufferedReader sc = new BufferedReader(new InputStreamReader(url_name.openStream()));
+
+            // reads system IPAddress
+            return sc.readLine().trim();
         }
 
 

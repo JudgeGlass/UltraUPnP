@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="301.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.zicron.ultraupnp.gui.CustomCommand">
+   <children>
+      <Button layoutX="461.0" layoutY="269.0" mnemonicParsing="false" text="Send Action" />
+      <Button layoutX="405.0" layoutY="269.0" mnemonicParsing="false" text="Cancel" />
+      <TextArea layoutX="24.0" layoutY="87.0" prefHeight="200.0" prefWidth="259.0" promptText="ex. &lt;argument&gt;value&lt;/argument&gt;" />
+      <TextField layoutX="24.0" layoutY="36.0" prefHeight="25.0" prefWidth="259.0" promptText="ex. AddPortMapping" />
+      <Label layoutX="24.0" layoutY="14.0" text="Action:" />
+      <Label layoutX="24.0" layoutY="70.0" text="Action Arguments:" />
+      <Hyperlink layoutX="297.0" layoutY="81.0" prefHeight="23.0" prefWidth="224.0" text="http://upnp.org/specs/gw/UPnP-gw-WANIPConnection-v2-Service.pdf" wrapText="true" />
+      <Label layoutX="300.0" layoutY="41.0" prefHeight="41.0" prefWidth="249.0" text="You can find a list of commands and other documentation here:" wrapText="true" />
+   </children>
+</AnchorPane>
